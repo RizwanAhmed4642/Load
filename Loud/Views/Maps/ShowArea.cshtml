@@ -1,0 +1,360 @@
+﻿@model SAS.Models.ViewModels.SASViewModels.AreaVM
+
+@{
+	ViewData["Title"] = "Area";
+}
+<div class="loaderBar"></div>
+<div class="content-wrapper">
+	<div class="container-fluid">
+		<div class="row pt-2">
+			<div class="col-xl-12">
+				<h1 class="text-center font-weight-bold">@ViewData["Title"]</h1>
+				<hr />
+				<p>@ViewData["Message"]</p>
+				<form asp-action="Create" asp-controller="Maps" id="mainForm" data-parsley-validate>
+					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+					<div class="row">
+						<div class="col-xl-2" hidden="hidden">
+							<div class="form-group">
+								<label asp-for="ID" class="control-label"></label>
+								<input asp-for="ID" class="form-control form-control-sm" />
+								<span asp-validation-for="ID" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-xl-2">
+							<div class="form-group">
+								<label asp-for="Nm" class="control-label"></label>
+								<input asp-for="Nm" class="form-control form-control-sm" required="required" />
+								<span asp-validation-for="Nm" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-xl-2">
+							<div class="form-group">
+								<label asp-for="StartLat" class="control-label"></label>
+								<input asp-for="StartLat" class="form-control form-control-sm" data-parsley-validation-threshold="1" data-parsley-trigger="keyup" data-parsley-type="number" required="required" />
+								<span asp-validation-for="StartLat" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-xl-2">
+							<div class="form-group">
+								<label asp-for="StartLng" class="control-label"></label>
+								<input asp-for="StartLng" class="form-control form-control-sm" data-parsley-validation-threshold="1" data-parsley-trigger="keyup" data-parsley-type="number" required="required" />
+								<span asp-validation-for="StartLng" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-xl-2">
+							<div class="form-group">
+								<label asp-for="EndLat" class="control-label"></label>
+								<input asp-for="EndLat" class="form-control form-control-sm" data-parsley-validation-threshold="1" data-parsley-trigger="keyup" data-parsley-type="number" required="required" />
+								<span asp-validation-for="EndLat" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-xl-2">
+							<div class="form-group">
+								<label asp-for="EndLng" class="control-label"></label>
+								<input asp-for="EndLng" class="form-control form-control-sm" data-parsley-validation-threshold="1" data-parsley-trigger="keyup" data-parsley-type="number" required="required" />
+								<span asp-validation-for="EndLng" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-xl-2" hidden="hidden">
+							<div class="form-group">
+								<label asp-for="SASChurchPartnerID" class="control-label"></label>
+								<input asp-for="SASChurchPartnerID" class="form-control form-control-sm" />
+								<span asp-validation-for="SASChurchPartnerID" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-xl-1">
+							<div class="form-group">
+								<label asp-for="Colour" class="control-label"></label>
+								<br />
+								@*<input type="color" id="favcolor" name="favcolor" value="#ff0000">*@
+								<input type="color" id="Colour" name="Colour" value="">
+								<span asp-validation-for="Colour" class="text-danger"></span>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="col-xl-6">
+				<div class="card">
+					<div class="card-header">
+						<h5 class="card-title text-center font-weight-bold">High Schools</h5>
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool" data-card-widget="collapse">
+								<i class="fas fa-minus"></i>
+							</button>
+							<button type="button" class="btn btn-tool" data-card-widget="remove">
+								<i class="fas fa-times"></i>
+							</button>
+						</div>
+					</div>
+					<div class="card-body">
+						<table class="display table table-striped table-borderless w-100" id="HighSchoolsTable">
+							<thead>
+								<tr class="font-weight-bold">
+									<td class=""> Name </td>
+									<td class=""> Status </td>
+									<td class=""> E-mail </td>
+									<td class=""> Last Info Sent </td>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="col-xl-6">
+				<div class="card">
+					<div class="card-header">
+						<h5 class="card-title text-center font-weight-bold">Primary Schools</h5>
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool" data-card-widget="collapse">
+								<i class="fas fa-minus"></i>
+							</button>
+							<button type="button" class="btn btn-tool" data-card-widget="remove">
+								<i class="fas fa-times"></i>
+							</button>
+						</div>
+					</div>
+					<div class="card-body">
+						<table class="display table table-striped table-borderless w-100" id="PrimarySchoolsTable">
+							<thead>
+								<tr>
+									<td class=""> Name </td>
+									<td class=""> Status </td>
+									<td class=""> E-mail </td>
+									<td class=""> Last Info Sent </td>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section scripts{
+
+	<script>
+
+		function getHighSchoolsTableRecords() {
+			$('#HighSchoolsTable').DataTable().destroy();
+			//$('#HighSchoolsTable').DataTable().ajax.reload().draw();
+			$.fn.dataTable.ext.errMode = 'none';    //Suppressing Warnings in DataTables
+			dataTableReceipt = $("#HighSchoolsTable").DataTable(
+				{
+					//"processing": true, // for show progress bar
+					//"serverSide": true, // for process server side
+					"filter": true, // this is for disable filter (search box)
+					"orderMulti": false, // for disable multiple column at once
+					"initComplete": function (settings, json) {
+
+						//console.log(json);
+					},
+					"pageLength": 5,
+					"ajax": {
+						"url": "@Url.Action("GetAllHighSchoolsInJson", "HighSchool")",
+						"type": "Post",
+						"datatype": "json",
+						"data": function (d) {
+							// pass start and length parameters to the server
+							//d.draw = d.draw || 1;
+							//d.start = d.start || 0;
+							//d.length = d.length || 100;
+							//d.page = (d.start / d.length) + 1;
+							//d.pageSize = d.length;
+							//d.search = $('#HighSchoolsTable').DataTable().search();
+						},
+						"dataSrc": function (json) {
+
+							// return the data for the current page
+							return json.data;
+						},
+						"error": function (jqXHR, textStatus, errorThrown) {
+							//console.log(jqXHR.responseText);
+						}
+					},
+					"columns": [
+						{ "data": "nm", width: '', class: '' },
+						{ "data": "sreStatusName", width: '', class: '' },
+						{ "data": "emailFlag", width: '', class: '' },
+						{
+							"data": null,
+							class: '',
+							"render": function (data, type, full, meta) {
+
+								if (typeof (full["lastInfoSent"]) !== "undefined" && full["lastInfoSent"] !== null)
+									return moment(full["lastInfoSent"]).format('MM-DD-YYYY');//converting datetime into string with moment.js function
+								else
+									return "";
+							}
+						},
+					],
+					"order": [[0, "asc",]],
+					"scrollY": "200px",
+					"scrollX": true,
+					"dom": 'frtip',
+					"buttons": [
+						{
+							extend: 'copy',
+							messageTop: '\n ',
+							messageBottom: '\n ',
+							exportOptions: {
+								columns: ':visible'
+								//columns: [0, 1, 2, 3, 4, 5, 6]
+							},
+							text: '<i class="fa fa-clone"></i> Copy'
+						},
+						{
+							extend: 'excel',
+							messageTop: '\n ',
+							messageBottom: '\n ',
+							exportOptions: {
+								columns: ':visible'
+								//columns: [0, 1, 2, 3, 4, 5, 6]
+							},
+							text: '<i class="fa fa-file-excel-o"></i> Excel'
+						},
+						{
+							extend: 'csv',
+							messageTop: '\n ',
+							messageBottom: '\n ',
+							exportOptions: {
+								columns: ':visible'
+								//columns: [0, 1, 2, 3, 4, 5, 6]
+							},
+							text: '<i class="fa fa-file"></i> CSV'
+						},
+						{
+							extend: 'pdf',
+							messageTop: '\n ',
+							messageBottom: '\n ',
+							exportOptions: {
+								columns: ':visible'
+								//columns: [0, 1, 2, 3, 4, 5, 6]
+							},
+							text: '<i class="fa fa-file-pdf-o"></i> PDF'
+						},
+						{
+							extend: 'print',
+							messageTop: '<br> ',
+							messageBottom: '<br> ',
+							exportOptions: {
+								columns: ':visible'
+								//columns: [0, 1, 2, 3, 4, 5, 6]
+							},
+							text: '<i class="fa fa-print"></i> Print'
+						},
+						'colvis'
+					],
+					responsive: true
+				});
+		}
+
+		function getPrimarySchoolsTableRecords() {
+			$('#PrimarySchoolsTable').DataTable().destroy();
+			$.fn.dataTable.ext.errMode = 'none';    //Suppressing Warnings in DataTables
+			dataTableReceipt = $("#PrimarySchoolsTable").DataTable(
+				{
+					//"processing": true, // for show progress bar
+					//"serverSide": true, // for process server side
+					"filter": true, // this is for disable filter (search box)
+					"orderMulti": false, // for disable multiple column at once
+					"initComplete": function (settings, json) {
+
+						console.log(json);
+					},
+					"pageLength": 5,
+					"ajax": {
+						"url": "@Url.Action("GetAllPrimarySchoolsInJson", "PrimarySchool")?type=Public",
+						"type": "GET",
+						"datatype": "json"
+					},
+					"columns": [
+						{ "data": "nm", width: '', class: '' },
+						{ "data": "sreStatusName", width: '', class: '' },
+						{ "data": "emailFlag", width: '', class: '' },
+						{
+							"data": null,
+							class: '',
+							"render": function (data, type, full, meta) {
+
+								if (typeof (full["lastInfoSent"]) !== "undefined" && full["lastInfoSent"] !== null)
+									return moment(full["lastInfoSent"]).format('MM-DD-YYYY');//converting datetime into string with moment.js function
+								else
+									return "";
+							}
+						},
+					],
+					"order": [[0, "asc",]],
+					"scrollY": "200px",
+					"scrollX": true,
+					"dom": 'frtip',
+					"buttons": [
+					    {
+					        extend: 'copy',
+					        messageTop: '\n ',
+					        messageBottom: '\n ',
+					        exportOptions: {
+					            columns: ':visible'
+					            //columns: [0, 1, 2, 3, 4, 5, 6]
+					        },
+					        text: '<i class="fa fa-clone"></i> Copy'
+					    },
+					    {
+					        extend: 'excel',
+					        messageTop: '\n ',
+					        messageBottom: '\n ',
+					        exportOptions: {
+					            columns: ':visible'
+					            //columns: [0, 1, 2, 3, 4, 5, 6]
+					        },
+					        text: '<i class="fa fa-file-excel-o"></i> Excel'
+					    },
+					    {
+					        extend: 'csv',
+					        messageTop: '\n ',
+					        messageBottom: '\n ',
+					        exportOptions: {
+					            columns: ':visible'
+					            //columns: [0, 1, 2, 3, 4, 5, 6]
+					        },
+					        text: '<i class="fa fa-file"></i> CSV'
+					    },
+					    {
+					        extend: 'pdf',
+					        messageTop: '\n ',
+					        messageBottom: '\n ',
+					        exportOptions: {
+					            columns: ':visible'
+					            //columns: [0, 1, 2, 3, 4, 5, 6]
+					        },
+					        text: '<i class="fa fa-file-pdf-o"></i> PDF'
+					    },
+					    {
+					        extend: 'print',
+					        messageTop: '<br> ',
+					        messageBottom: '<br> ',
+					        exportOptions: {
+					            columns: ':visible'
+					            //columns: [0, 1, 2, 3, 4, 5, 6]
+					        },
+					        text: '<i class="fa fa-print"></i> Print'
+					    },
+					    'colvis'
+					],
+					responsive: true
+				});
+		}
+
+		$(document).ready(function () {
+
+			getHighSchoolsTableRecords(); 
+			getPrimarySchoolsTableRecords();
+		});
+	</script>
+}

@@ -1,0 +1,251 @@
+﻿@model SAS.Models.ViewModels.SASViewModels.EmailVM
+
+@{
+    ViewData["Title"] = "E-mail";
+}
+
+<div class="loaderBar"></div>
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-10 col-sm-10 col-lg-10 col-Xl-10">
+
+                <div class="card  ml-1 mt-3">
+                    <div class="card-header">
+                        <h3 class="text-center font-weight-bold">@ViewData["Title"]</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>@ViewData["Message"]</p>
+                        <form asp-action="Create" id="mainForm" enctype="multipart/form-data" data-parsley-validate>
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="row">
+                                <div class="col-md-1 col-sm-1 col-lg-1 col-Xl-1" hidden="hidden">
+                                    <div class="form-group">
+                                        <label asp-for="ID" class="control-label"></label>
+                                        <input asp-for="ID" class="form-control form-control-sm" />
+                                        <span asp-validation-for="ID" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 col-sm-3 col-lg-3 col-Xl-3">
+                                    <div class="form-group">
+                                        <label asp-for="Users" class="control-label"></label>
+                                        <select class="form-control form-control-sm" name="EmailToGroup" id="EmailToGroup" asp-items="@ViewBag.Users">
+                                            <option value="null" selected>Select Users</option>
+                                        </select>
+
+
+
+                                        <span asp-validation-for="Users" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-lg-3 col-Xl-3">
+                                    <div class="form-group">
+                                        <label asp-for="UsersArea" class="control-label"></label>
+                                        <select class="form-control form-control-sm"  id="userarea">  
+                                            </select>
+                                        <span asp-validation-for="UsersArea" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-lg-3 col-Xl-3">
+                                    <div class="form-group">
+                                        <label asp-for="VenueType" class="control-label"></label>
+                                        <select class="form-control form-control-sm" name="EmailToGroup" id="EmailToGroup">
+                                            <option value="null" selected>Select Venue Type</option>
+                                            <option value="High Schools">ABC</option>
+                                            <option value="Primary Schools">XYZ</option>
+                                            <option value="Churches">CDF</option>
+                                        </select>
+                                        <span asp-validation-for="VenueType" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-lg-3 col-Xl-3">
+                                    <div class="form-group">
+                                        <label asp-for="Venue" class="control-label"></label>
+                                        <select class="form-control form-control-sm" name="EmailToGroup" id="EmailToGroup">
+                                            <option value="null" selected>Select Venue Type</option>
+                                            <option value="High Schools">ABC</option>
+                                            <option value="Primary Schools">XYZ</option>
+                                            <option value="Churches">CDF</option>
+                                        </select>
+                                        <span asp-validation-for="Venue" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-lg-12 col-Xl-12">
+                                    <div class="form-group">
+                                        <label asp-for="Subject" class="control-label"></label>
+                                        <input asp-for="Subject" class="form-control form-control-sm" data-parsley-validation-threshold="1" data-parsley-trigger="keyup" data-parsley-length="[3, 512]" required="required" />
+                                        <span asp-validation-for="Subject" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label asp-for="Body" class="control-label"></label>
+                                        <textarea asp-for="Body" class="form-control"></textarea>
+                                        <span asp-validation-for="Body" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-lg-6 col-Xl-6">
+                                    <div class="form-group">
+                                        <label asp-for="Attachments" class="control-label"></label>
+                                        <input type="file" asp-for="Attachments" class="form-control-file form-control" multiple>
+                                        <span asp-validation-for="Attachments" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-lg-3 col-Xl-3">
+                                </div>
+                                @if (ViewBag.btnSubmitFormText != "Update")
+                                {
+                                    <div class="col-md-3 col-sm-3 col-lg-3 col-Xl-3">
+                                        <div class="form-group" style="margin-top:30px;">
+                                            <button type="button" onclick="submitForm();" id="btnSubmitForm" class="btn btn-md btn-outline-success">@ViewBag.btnSubmitFormText</button>
+                                            <a asp-action="Index" class="btn btn-md btn-outline-danger">Cancel</a>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-md-2 col-sm-2 col-lg-2 col-Xl-2 mt-3">
+                <div class="card">
+                    <div class="card-header">
+                        <strong> User List</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
+                            <label class="form-check-label" for="flexCheckDefault">
+                                ABC
+                            </label>
+                            <br />
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
+                            <label class="form-check-label" for="flexCheckDefault">
+                                XYZ
+                            </label>
+                            <br />
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
+                            <label class="form-check-label" for="flexCheckDefault">
+                                CDF
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script>
+        $("#EmailToGroup").change(function () {
+            debugger
+            var userId = this.value;
+          
+            $.ajax({
+
+                type: "GET", 
+                url: '@Url.Action("GetUserArea", "Email")?id=' + userId,
+                success: function (data) {
+                    debugger
+                    var html = '';
+                    console.log(data.data);
+                    $.each(data.data, function (i, item) {
+                        $("#userarea").append("<option value='" + item.areaId + "'>" + item.nm + "</option>");
+                    });
+
+
+                 
+                },
+                error: function () { alert('Error:'); $(".loaderBar").fadeOut("slow"); }
+            });
+
+
+
+        });
+        function validateMainForm() {
+
+            if ($('#mainForm').parsley().validate()) {
+                return true;
+            } else {
+                $.notify("Some fields are required.", { position: "top right", className: "error" });
+                return false;
+            }
+
+        }
+
+
+        function submitForm() {
+            if (validateMainForm()) {
+
+                $(".loaderBar").fadeIn("slow");
+                let myform = document.getElementById("mainForm");
+                // Serializing the whole form data to submit
+                let fd = new FormData(myform);
+                let url = "";
+                if ($("#btnSubmitForm").text() == "Create")
+                    url = '@Url.Action("Create", "Email")'
+                else if ($("#btnSubmitForm").text() == "Update")
+                    url = '@Url.Action("UpdateEmail", "Email")'
+                $.ajax({
+                    url: url,
+                    data: fd,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    success: function (data) {
+
+                        if (data.success) {
+
+                            $(".loaderBar").fadeOut("slow");
+                            if (data.success != false) {
+                                //$.notify(data.message, { globalPosition: "top right", className: data.flag });
+                                $.notify("E-mail sent successfully!", { globalPosition: "top right", className: "success" });
+                                //Refresh the form controls for next record
+                                $("#mainForm").trigger("reset");
+                                $("#btnSubmitForm").text("Create");
+                                //Loading the Grid Records
+                                //getEmailsTableRecords();
+                                //Sleep for 3 seconds and then redirect to home
+                                setTimeout(function () { window.location.href = "/Email/Index"; }, 3000);
+
+                            }
+                            else
+                                $.notify(data.message, { globalPosition: "top right", className: data.flag });
+
+                        }
+                    }
+                });
+            }
+        }
+
+        $(document).ready(function () {
+
+            $(document).on("change", "#EmailToGroup", function () {
+                if ($('#EmailToGroup option:selected').text() != "null") {
+                    // If the selected option is not "null", remove the "required" attribute from the ToEmail input
+                    $('#ToEmail').removeAttr('required');
+                } else {
+                    // Otherwise, add the "required" attribute to the ToEmail input
+                    $('#ToEmail').attr('required', true); // Fixed typo: should be attr(), not addAttr()
+                }
+            });
+
+        });
+    </script>
+}

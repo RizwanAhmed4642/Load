@@ -1,0 +1,160 @@
+﻿@model SAS.Models.ViewModels.SASViewModels.EmailVM
+
+@{
+	ViewData["Title"] = "E-mail";
+}
+
+<div class="loaderBar"></div>
+<div class="content-wrapper">
+	<div class="container-fluid">
+		<div class="row pt-2">
+			<div class="col-xl-12">
+				<h1 class="text-center font-weight-bold">@ViewData["Title"]</h1>
+				<hr />
+				<p>@ViewData["Message"]</p>
+				<form asp-action="Create" id="mainForm" enctype="multipart/form-data" data-parsley-validate>
+					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+					<div class="row">
+						<div class="col-xl-2" hidden="hidden">
+							<div class="form-group">
+								<label asp-for="ID" class="control-label"></label>
+								<input asp-for="ID" class="form-control form-control-sm" />
+								<span asp-validation-for="ID" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-xl-12">
+							<div class="form-group">
+								<label asp-for="EmailToGroup" class="control-label"></label>
+								<select class="form-control form-control-sm" name="EmailToGroup" id="EmailToGroup">
+									<option value="null" selected>Select Email to Group</option>
+									<option value="High Schools">High Schools</option>
+									<option value="Primary Schools">Primary Schools</option>
+									<option value="Churches">Churches</option>
+								</select>
+								<span asp-validation-for="EmailToGroup" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-xl-12">
+							<div class="form-group">
+								<label asp-for="ToEmail" class="control-label"></label>
+								<input asp-for="ToEmail" class="form-control form-control-sm" data-parsley-validation-threshold="1" data-parsley-trigger="keyup" data-parsley-length="[5, 255]" required="required" />
+								<span asp-validation-for="ToEmail" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-xl-12">
+							<div class="form-group">
+								<label asp-for="Subject" class="control-label"></label>
+								<input asp-for="Subject" class="form-control form-control-sm" data-parsley-validation-threshold="1" data-parsley-trigger="keyup" data-parsley-length="[3, 512]" required="required" />
+								<span asp-validation-for="Subject" class="text-danger"></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-xl-12">
+							<div class="form-group">
+								<label asp-for="Body" class="control-label"></label>
+								<textarea asp-for="Body" class="form-control"></textarea>
+								<span asp-validation-for="Body" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-xl-12">
+							<div class="form-group">
+								<label asp-for="Attachments" class="control-label"></label>
+								<input type="file" asp-for="Attachments" class="form-control-file" multiple>
+								<span asp-validation-for="Attachments" class="text-danger"></span>
+							</div>
+						</div>
+					</div>
+					<hr />
+					@if (ViewBag.btnSubmitFormText != "Update")
+					{
+						<div class="row">
+							<div class="col-xl-2">
+								<div class="form-group" style="margin-top:30px;">
+									<button type="button" onclick="submitForm();" id="btnSubmitForm" class="btn btn-sm btn-primary">@ViewBag.btnSubmitFormText</button>
+									<a asp-action="Index" class="btn btn-sm btn-danger">Cancel</a>
+								</div>
+							</div>
+						</div>
+					}
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+
+	<script>
+		function validateMainForm() {
+
+			if ($('#mainForm').parsley().validate()) {
+				return true;
+			} else {
+				$.notify("Some fields are required.", { position: "top right", className: "error" });
+				return false;
+			}
+
+		}
+
+		function submitForm() {
+			if (validateMainForm()) {
+
+				$(".loaderBar").fadeIn("slow");
+				let myform = document.getElementById("mainForm");
+				// Serializing the whole form data to submit
+				let fd = new FormData(myform);
+				let url = "";
+				if ($("#btnSubmitForm").text() == "Create")
+					url = '@Url.Action("Create", "Email")'
+				else if ($("#btnSubmitForm").text() == "Update")
+					url = '@Url.Action("UpdateEmail", "Email")'
+				$.ajax({
+					url: url,
+					data: fd,
+					cache: false,
+					processData: false,
+					contentType: false,
+					type: 'POST',
+					success: function (data) {
+
+						if (data.success) {
+
+							$(".loaderBar").fadeOut("slow");
+							if (data.success != false) {
+								//$.notify(data.message, { globalPosition: "top right", className: data.flag });
+								$.notify("E-mail sent successfully!", { globalPosition: "top right", className: "success" });
+								//Refresh the form controls for next record
+								$("#mainForm").trigger("reset");
+								$("#btnSubmitForm").text("Create");
+								//Loading the Grid Records
+								//getEmailsTableRecords();
+								//Sleep for 3 seconds and then redirect to home
+								setTimeout(function () { window.location.href = "/Email/Index"; }, 3000);
+
+							}
+							else
+								$.notify(data.message, { globalPosition: "top right", className: data.flag });
+
+						}
+					}
+				});
+			}
+		}
+
+		$(document).ready(function () {
+
+			$(document).on("change", "#EmailToGroup", function () {
+				if ($('#EmailToGroup option:selected').text() != "null") {
+					// If the selected option is not "null", remove the "required" attribute from the ToEmail input
+					$('#ToEmail').removeAttr('required');
+				} else {
+					// Otherwise, add the "required" attribute to the ToEmail input
+					$('#ToEmail').attr('required', true); // Fixed typo: should be attr(), not addAttr()
+				}
+			});
+
+		});
+	</script>
+}

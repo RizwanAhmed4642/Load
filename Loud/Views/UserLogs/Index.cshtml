@@ -1,0 +1,81 @@
+﻿@model System.Collections.Generic.IEnumerable<SAS.Models.ViewModels.SASViewModels.UserAuditVM>
+@{
+    ViewData["Title"] = "User Logs";
+}
+
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <div class="row pt-2">
+            <div class="col-xl-12">
+                <h1 class="text-center font-weight-bold">@ViewData["Title"]</h1>
+                <hr />
+                <p>@ViewData["Message"]</p>
+                <table class="table" id="myTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UserAuditId)
+                            </th>
+                            <th hidden="hidden">
+                                @Html.DisplayNameFor(model => model.UserId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UserName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Timestamp)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.AuditEvent)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IpAddress)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserAuditId)
+                                </td>
+                                <td hidden="hidden">
+                                    @Html.DisplayFor(modelItem => item.UserId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Timestamp)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AuditEvent)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IpAddress)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#myTable").DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": true,
+                "responsive": true,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-3:eq(0)');
+        });
+    </script>
+    }

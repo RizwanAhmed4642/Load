@@ -1,0 +1,151 @@
+﻿@{
+    ViewData["Title"] = "Chaplain Task Types List";
+}
+
+<div class="loaderBar"></div>
+<div class="content-wrapper">
+    <div class="container-fluid">
+
+        <h1 class="text-center font-weight-bold">@ViewData["Title"]</h1>
+        <hr />
+
+        <div class="row pt-2">
+            <div class="col-xl-12">
+                <a href="@Url.Action("Create", "ChaplainTaskType")" class="btn btn-primary mb-2">
+                    <i class="fas fa-plus"></i>
+                    Create Chaplain Task Type
+                </a>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">@ViewData["Title"]</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="display table table-striped table-borderless w-100" id="ChaplainTaskTypesTable">
+                            <thead>
+                                <tr>
+                                    <td class="w-75">
+                                        Name
+                                    </td>
+                                    @*<td>Actions</td>*@
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts_1 {
+
+    <script>
+        function getChaplainTaskTypesTableRecords() {
+            $('#ChaplainTaskTypesTable').DataTable().destroy();
+            $.fn.dataTable.ext.errMode = 'none';    //Suppressing Warnings in DataTables
+            dataTableReceipt = $("#ChaplainTaskTypesTable").DataTable(
+                {
+                    "processing": true, // for show progress bar
+                    //"serverSide": true, // for process server side
+                    "filter": true, // this is for disable filter (search box)
+                    "orderMulti": false, // for disable multiple column at once
+                    "initComplete": function (settings, json) {
+
+                        //console.log(json);
+                    },
+                    "pageLength": 10,
+                    "ajax": {
+                        //"url": '/ChaplainTaskType/GetAllChaplainTaskTypesInJson/,
+                        "url": "@Url.Action("GetAllChaplainTaskTypesInJson", "ChaplainTaskType")",
+                        "type": "GET",
+                        "datatype": "json"
+                    },
+                    "columns": [
+                        { "data": "nm", width: '', class: '' },
+                        //{
+                        //    "data": null, width: '', class: '',
+                        //    "render": function (data, type, full, meta) {
+                        //        var id = full["id"];
+                        //        return "<a class='btn btn-sm btn-warning' id='btnEditChaplainTaskType' title='Edit' onclick=''><i class='fas fa-edit'> </i> </a> <a class='btn btn-sm btn-danger' id='btnDeleteChaplainTaskType' title='Delete' onclick=''><i class='fas fa-trash'> </i> </a>"
+                        //    },
+                        //    "orderable": false,
+                        //    "searchable": false
+                        //}
+                    ],
+                    "order": [[0, "asc",]],
+                    "dom": 'lfrtBip',
+                    "buttons": [
+                        {
+                            extend: 'copy',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-clone"></i> Copy'
+                        },
+                        {
+                            extend: 'excel',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file-excel-o"></i> Excel'
+                        },
+                        {
+                            extend: 'csv',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file"></i> CSV'
+                        },
+                        {
+                            extend: 'pdf',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file-pdf-o"></i> PDF'
+                        },
+                        {
+                            extend: 'print',
+                            messageTop: '<br> ',
+                            messageBottom: '<br> ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-print"></i> Print'
+                        },
+                        'colvis'
+                    ],
+                    responsive: true
+                });
+        }
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            getChaplainTaskTypesTableRecords();
+        });
+    </script>
+}

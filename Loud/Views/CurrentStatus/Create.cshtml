@@ -1,0 +1,424 @@
+﻿@model SAS.Models.ViewModels.SASViewModels.CurrentStatusVM
+
+@{
+	ViewData["Title"] = "SRE Status";
+}
+
+<div class="loaderBar"></div>
+<div class="content-wrapper">
+	<div class="container-fluid">
+		<div class="row pt-2">
+			<div class="col-xl-12">
+				<h1 class="text-center font-weight-bold">@ViewData["Title"]</h1>
+				<hr />
+				<p>@ViewData["Message"]</p>
+				<form asp-action="Create" id="mainForm" data-parsley-validate>
+					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+					<div class="row">
+						<div class="col-xl-2" hidden="hidden">
+							<div class="form-group">
+								<label asp-for="ID" class="control-label"></label>
+								<input asp-for="ID" class="form-control form-control-sm" />
+								<span asp-validation-for="ID" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-xl-4">
+							<div class="form-group">
+								<label asp-for="Nm" class="control-label"></label>
+								<input asp-for="Nm" class="form-control form-control-sm" required="required" />
+								<span asp-validation-for="Nm" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-xl-2" hidden="hidden">
+							<div class="form-group">
+								<label asp-for="HighSchoolIcon" class="control-label"></label>
+								<input asp-for="HighSchoolIcon" class="form-control form-control-sm" />
+								<span asp-validation-for="HighSchoolIcon" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-xl-2" hidden="hidden">
+							<div class="form-group">
+								<label asp-for="PrimSchoolIcon" class="control-label"></label>
+								<input asp-for="PrimSchoolIcon" class="form-control form-control-sm" />
+								<span asp-validation-for="PrimSchoolIcon" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-xl-2" hidden="hidden">
+							<div class="form-group">
+								<label asp-for="PrivateHighIcon" class="control-label"></label>
+								<input asp-for="PrivateHighIcon" class="form-control form-control-sm" />
+								<span asp-validation-for="PrivateHighIcon" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-xl-2" hidden="hidden">
+							<div class="form-group">
+								<label asp-for="PrivatePrimaryIcon" class="control-label"></label>
+								<input asp-for="PrivatePrimaryIcon" class="form-control form-control-sm" />
+								<span asp-validation-for="PrivatePrimaryIcon" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="col-xl-2" style="margin-top:30px;">
+							<div class="form-group">
+								<div class="form-check text-success">
+									<input type="checkbox" class="form-check-input" value="true" name="Opportunity" id="Opportunity">
+									<label class="form-check-label" for="Opportunity">Opportunity?</label>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-2 text-center" style="margin-top:30px;">
+							<button type="button" onclick="submitForm();" id="btnSubmitForm" class="btn btn-sm btn-primary">Create</button>
+							<a asp-action="Index" class="btn btn-sm btn-danger">Cancel</a>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<div class="row pt-2">
+			<div class="col-xl-12">
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title">CurrentStatus List</h3>
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool" data-card-widget="collapse">
+								<i class="fas fa-minus"></i>
+							</button>
+							<button type="button" class="btn btn-tool" data-card-widget="remove">
+								<i class="fas fa-times"></i>
+							</button>
+						</div>
+					</div>
+					<div class="card-body">
+						<table class="display table table-striped table-borderless w-100" id="CurrentStatussTable">
+							<thead>
+								<tr>
+									<td class=""> ID </td>
+									<td class=""> Name  </td>
+									<td class=""> High School Icon </td>
+									<td class=""> Primary School Icon </td>
+									<td class=""> P.High School Icon </td>
+									<td class=""> P.Primary School Icon </td>
+									<td class=""> High Catholic Icon </td>
+									<td class=""> Primary Catholic Icon </td>
+									<td>Actions</td>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+@section Scripts {
+
+
+
+	<script>
+		function validateMainForm() {
+
+			if ($('#mainForm').parsley().validate()) {
+				return true;
+			} else {
+				$.notify("Some fields are required.", { position: "top right", className: "error" });
+				return false;
+			}
+
+		}
+
+		function submitForm() {
+			if (validateMainForm()) {
+
+				$(".loaderBar").fadeIn("slow");
+				let myform = document.getElementById("mainForm");
+				// Serializing the whole form data to submit
+				let fd = new FormData(myform);
+				let url = "";
+				if ($("#btnSubmitForm").text() == "Create")
+					url = '@Url.Action("Create", "CurrentStatus")'
+				else if ($("#btnSubmitForm").text() == "Update")
+					url = '@Url.Action("UpdateCurrentStatus", "CurrentStatus")'
+				$.ajax({
+					url: url,
+					data: fd,
+					cache: false,
+					processData: false,
+					contentType: false,
+					type: 'POST',
+					success: function (data) {
+
+						if (data.success) {
+
+							$(".loaderBar").fadeOut("slow");
+							if (data.success != false) {
+								$.notify(data.message, { globalPosition: "top right", className: data.flag });
+								//Refresh the form controls for next record
+								$("#mainForm").trigger("reset");
+								$("#btnSubmitForm").text("Create");
+								//Loading the Grid Records
+								getCurrentStatussTableRecords();
+								//reload the page after 1 second
+								//Sleep for 1 seconds and then redirect to home
+								//setTimeout(function () { location.reload(); }, 1000);
+
+							}
+							else
+								$.notify(data.message, { globalPosition: "top right", className: data.flag });
+
+						}
+					}
+				});
+			}
+		}
+
+		function EditCurrentStatus(id) {
+
+			$(".loaderBar").fadeIn("slow");
+			$.ajax({
+				url: '@Url.Action("EditCurrentStatus", "CurrentStatus")',
+				data: { id: id },
+				cache: false,
+				type: 'POST',
+				success: function (data) {
+
+					if (data.success) {
+
+						$(".loaderBar").fadeOut("slow");
+						if (data.success != false) {
+
+							//Settings the controls values
+							$("#ID").val(data.data.id);
+							$("#Nm").val(data.data.nm);
+							$("#HighSchoolIcon").val(data.data.highSchoolIcon);
+							$("#PrimSchoolIcon").val(data.data.primSchoolIcon);
+							$("#PrivateHighIcon").val(data.data.privateHighIcon);
+							$("#PrivatePrimaryIcon").val(data.data.privatePrimaryIcon);
+							$('#Opportunity').prop('checked', data.data.opportunity);
+							$("#Created_By").val(data.data.created_By);
+							$("#Updated_By").val(data.data.updated_By);
+							$("#Created_At").val(data.data.created_At);
+							$("#Updated_At").val(data.data.updated_At);
+							$("#btnSubmitForm").text("Update");
+							console.log(data);
+
+						}
+						else
+							$.notify(data.message, { globalPosition: "top right", className: data.flag });
+
+					}
+				}
+			});
+		}
+
+		function Delete(id) {
+
+			$.confirm({
+				title: 'Delete',
+				content: 'Are you sure to delete this record?',
+				icon: 'fa fa-question-circle-o',
+				theme: 'supervan',
+				closeIcon: true,
+				animation: 'scale',
+				type: 'orange',
+				buttons: {
+					cancel: {
+						text: 'Cancel',
+						btnClass: 'btn-blue',
+						keys: ['esc'],
+						action: function () {
+
+							$(".loaderBar").fadeOut("slow");
+						}
+					},
+					confirm: {
+						text: 'Delete',
+						btnClass: 'btn-red',
+						keys: ['enter', 'shift'],
+						action: function () {
+
+							$(".loaderBar").fadeIn("slow");
+							$.ajax({
+
+								type: "POST",
+								url: '@Url.Action("DeleteCurrentStatus", "CurrentStatus")?id=' + id,
+								success: function (data) {
+
+									if (data.success) {
+										$(".loaderBar").fadeOut("slow");
+										$.notify("Deleted Successfully", { globalPosition: "top right", className: "success" });
+										//Loading the Grid Records
+										getCurrentStatussTableRecords();
+									}
+								},
+								error: function () { alert('Error:'); $(".loaderBar").fadeOut("slow"); }
+							});
+							//reload the page after 1 second
+							//Sleep for 1 seconds and then redirect to home
+							//setTimeout(function () { location.reload(); }, 1000);
+						}
+					}
+				}
+			});
+
+		}
+
+		function getCurrentStatussTableRecords() {
+			$('#CurrentStatussTable').DataTable().destroy();
+			$.fn.dataTable.ext.errMode = 'none';    //Suppressing Warnings in DataTables
+			dataTableReceipt = $("#CurrentStatussTable").DataTable(
+				{
+					"processing": true, // for show progress bar
+					//"serverSide": true, // for process server side
+					"filter": true, // this is for disable filter (search box)
+					"orderMulti": false, // for disable multiple column at once
+					"initComplete": function (settings, json) {
+
+						//console.log(json);
+					},
+					"pageLength": 10,
+					"ajax": {
+						//"url": '/CurrentStatus/GetAllCurrentStatussInJson/,
+						"url": "@Url.Action("GetAllCurrentStatussInJson", "CurrentStatus")",
+						"type": "GET",
+						"datatype": "json"
+					},
+					"columns": [
+						{ "data": "id", width: '', class: '' },
+						{ "data": "nm", width: '', class: '' },
+						{
+							"data": null, width: '', class: '',
+							"render": function (data, type, full, meta) {
+								var id = full["id"];
+								return `<img src='/media/icons/high-school-${id}.png' width='26px' height='32px' />`
+							},
+							"orderable": false,
+							"searchable": false
+						},
+						{
+							"data": null, width: '', class: '',
+							"render": function (data, type, full, meta) {
+								var id = full["id"];
+								return `<img src='/media/icons/primary-school-${id}.png' width='26px' height='32px' />`
+							},
+							"orderable": false,
+							"searchable": false
+						},
+						{
+							"data": null, width: '', class: '',
+							"render": function (data, type, full, meta) {
+								var id = full["id"];
+								return `<img src='/media/icons/private-high-school-${id}.png' width='26px' height='32px' />`
+							},
+							"orderable": false,
+							"searchable": false
+						},
+						{
+							"data": null, width: '', class: '',
+							"render": function (data, type, full, meta) {
+								var id = full["id"];
+								return `<img src='/media/icons/private-primary-school-${id}.png' width='26px' height='32px' />`
+							},
+							"orderable": false,
+							"searchable": false
+						},
+						{
+							"data": null, width: '', class: '',
+							"render": function (data, type, full, meta) {
+								var id = full["id"];
+								return `<img src='/media/icons/high-catholic-${id}.png' width='26px' height='32px' />`
+							},
+							"orderable": false,
+							"searchable": false
+						},
+						{
+							"data": null, width: '', class: '',
+							"render": function (data, type, full, meta) {
+								var id = full["id"];
+								return `<img src='/media/icons/primary-catholic-${id}.png' width='26px' height='32px' />`
+							},
+							"orderable": false,
+							"searchable": false
+						},
+						{
+							"data": null, width: '', class: '',
+							"render": function (data, type, full, meta) {
+								var id = full["id"];
+								return "<a class='btn btn-sm btn-warning' id='btnEditCurrentStatus' title='Edit' onclick='EditCurrentStatus(\"" + id + "\")'><i class='fas fa-edit'> </i> </a> <a class='btn btn-sm btn-danger' id='btnDeleteCurrentStatus' title='Delete' onclick='Delete(\"" + id + "\")'><i class='fas fa-trash'> </i> </a>"
+							},
+							"orderable": false,
+							"searchable": false
+						}
+					],
+					"order": [[0, "asc",]],
+					"dom": 'lfrtBip',
+					"buttons": [
+						{
+							extend: 'copy',
+							messageTop: '\n ',
+							messageBottom: '\n ',
+							exportOptions: {
+								columns: ':visible'
+								//columns: [0, 1, 2, 3, 4, 5, 6]
+							},
+							text: '<i class="fa fa-clone"></i> Copy'
+						},
+						{
+							extend: 'excel',
+							messageTop: '\n ',
+							messageBottom: '\n ',
+							exportOptions: {
+								columns: ':visible'
+								//columns: [0, 1, 2, 3, 4, 5, 6]
+							},
+							text: '<i class="fa fa-file-excel-o"></i> Excel'
+						},
+						{
+							extend: 'csv',
+							messageTop: '\n ',
+							messageBottom: '\n ',
+							exportOptions: {
+								columns: ':visible'
+								//columns: [0, 1, 2, 3, 4, 5, 6]
+							},
+							text: '<i class="fa fa-file"></i> CSV'
+						},
+						{
+							extend: 'pdf',
+							messageTop: '\n ',
+							messageBottom: '\n ',
+							exportOptions: {
+								columns: ':visible'
+								//columns: [0, 1, 2, 3, 4, 5, 6]
+							},
+							text: '<i class="fa fa-file-pdf-o"></i> PDF'
+						},
+						{
+							extend: 'print',
+							messageTop: '<br> ',
+							messageBottom: '<br> ',
+							exportOptions: {
+								columns: ':visible'
+								//columns: [0, 1, 2, 3, 4, 5, 6]
+							},
+							text: '<i class="fa fa-print"></i> Print'
+						},
+						'colvis'
+					],
+					responsive: true
+				});
+		}
+
+	</script>
+
+	<script>
+		$(document).ready(function () {
+
+			getCurrentStatussTableRecords();
+		});
+	</script>
+
+    }

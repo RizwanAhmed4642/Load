@@ -1,0 +1,402 @@
+﻿@model ApplicationUser
+@{
+	ViewData["Title"] = "Map Details";
+}
+
+<div class="loaderBar"></div>
+<div class="content-wrapper">
+	<div class="container-fluid">
+		@*        <h1 class="text-center font-weight-bold">@ViewData["Title"]</h1>
+		<p>@ViewData["Message"]</p>*@
+		<div class="row mb-5" style="font-size:13px;">
+			<div class="col-xl-6 mt-5">
+				<button onclick="recreateGeocodesOnMap('null', 'null', 'null', 'null', 'null', 'null', true);" class="btn btn-primary float-left" id="btnLocationType">
+					<i class="fa fa-map-marked"> </i> Refresh Map
+				</button>
+				<div id="map" style="width:100%; height:450px;"></div>
+			</div>
+			<div class="col-xl-6">
+				<div class="row">
+					<div class="col-md-12">
+						<input id="address" type="text" value="Sydney" hidden="hidden">
+						@*<p class="h5 font-weight-bold">Filter by Location Type</p>*@
+						<div class="input-group mb-3">
+							<select class="custom-select" id="locationType" required>
+								<option selected value="All">Filter by Location Type</option>
+								<option value="All">All Locations</option>
+								<option value="HighSchool">High School</option>
+								<option value="PrimarySchool">Primary School</option>
+								<option value="Church">Church</option>
+							</select>
+							<div class="input-group-append">
+								<button onclick="GetAllLocationsInJson(0)" class="btn btn-success" id="btnLocationType"><i class="fa fa-truck-loading"> </i> Load Data</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div>
+					<table id="example" class="display w-100">
+						<thead>
+							<tr>
+								<th>Type</th>
+								<th class="w-50">Name</th>
+								<th class="w-25">Address</th>
+								<th>Suburb</th>
+								<th>State</th>
+								<th></th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+			<div class="row p-3">
+				<div class="col-xl-2" hidden="hidden">
+					<label>Venue Name</label>
+					<input type="text" name="ID" id="ID" class="form-control form-control-sm" />
+				</div>
+				<div class="col-xl-2">
+					<label>Venue Name</label>
+					<input type="text" id="VenueName" class="form-control form-control-sm" />
+				</div>
+				<div class="col-xl-1">
+					<label>Latitude</label>
+					<input type="text" id="Latitude" class="form-control form-control-sm" />
+				</div>
+				<div class="col-xl-1">
+					<label>Longitude</label>
+					<input type="text" id="Longitude" class="form-control form-control-sm" />
+				</div>
+				<div class="col-xl-2">
+					<label>Street Address</label>
+					<input type="text" id="StreetAddress" class="form-control form-control-sm" />
+				</div>
+				<div class="col-xl-2">
+					<label>Phone #1</label>
+					<input type="text" id="Phone1" class="form-control form-control-sm" />
+				</div>
+				<div class="col-xl-2">
+					<label>Phone #1</label>
+					<input type="text" id="Phone2" class="form-control form-control-sm" />
+				</div>
+				<div class="col-xl-2">
+					<label>E-mail #1</label>
+					<input type="text" id="email" class="form-control form-control-sm" />
+				</div>
+				<div class="col-xl-2">
+					<label>E-mail #2</label>
+					<input type="text" id="email2" class="form-control form-control-sm" />
+				</div>
+				<div class="col-xl-1">
+					<label>Area</label>
+					<select id="AreaID" class="form-control form-control-sm select2" asp-items="ViewBag.AreaID"></select>
+				</div>
+				<div class="col-xl-1">
+					<a onclick="doFilteration();" style="margin-top:25px;" id="btnFilter" class='btn btn-sm btn-secondary '><i class="fas fa-search-minus"> </i> Filter</a>
+				</div>
+				<div class="col-xl-1">
+					<label>Type </label>
+					<select id="type" class="form-control form-control-sm select2" asp-items="ViewBag.type"></select>
+				</div>
+				<div class="col-xl-1">
+					<label>SRE Status </label>
+					<select id="SREStatusID" class="form-control form-control-sm select2" asp-items="ViewBag.SREStatusID"></select>
+				</div>
+				<div class="col-xl-1" style="margin-top:20px;">
+					<img src="~/media/icons/high-school-1.png" class="float-left" alt="School Icon" id="schoolIcon" width="26px" height="32px" />
+					<img src="~/media/icons/Church-0.png" class="float-right" alt="Church Icon" id="churchIcon" width="26px" height="32px" />
+				</div>
+				<div class="col-xl-1">
+					<label>Participate</label>
+					<select id="Participate" class="form-control select2" asp-items="Html.GetEnumSelectList<SAS.Models.ViewModels.SASViewModels.EnumParticipateVM>()"></select>
+				</div>
+				<div class="col-xl-1">
+					<a href='#' target='_blank' style="margin-top:25px;" id="btnShowDetails" class='btn btn-sm btn-primary '><i class="fas fa-eye"> </i> Show Details</a>
+				</div>
+
+				<div class="col-xl-6 mt-1 border HighSchoolAssos">
+					<p class="font-weight-bold p-2">
+						<span class="float-xl-left">
+							Associated Primary School
+						</span>
+						@*<span class="float-xl-right">
+						<button onclick="openPSForm();" type="button" class="btn btn-sm btn-outline-success"><i class="fas fa-plus"> </i> </button>
+						<button onclick="getPrimarySchoolTableRecords();" type="button" class="btn btn-sm btn-outline-primary"><i class="fas fa-sync"> </i> </button>
+						</span>*@
+					</p>
+					<table class="display table table-striped table-sTasked w-100" id="PrimarySchoolTable">
+						<thead>
+							<tr class="bg-gradient-gray">
+								<td class=""> Name </td>
+								<td class=""> Note </td>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+				<div class="col-xl-6 mt-1 border HighSchoolAssos">
+					<p class="font-weight-bold p-2">
+						<span class="float-xl-left">
+							Associated Churches
+						</span>
+						@*<span class="float-xl-right">
+						<button onclick="openChurchForm();" type="button" class="btn btn-sm btn-outline-success"><i class="fas fa-plus"> </i> </button>
+						<button onclick="getChurchTableRecords();" type="button" class="btn btn-sm btn-outline-primary"><i class="fas fa-sync"> </i> </button>
+						<button class="btn btn-sm btn-outline-secondary" title="Send Stats" onclick="openEmailSender('email')" type="button"><i class="fas fa-paper-plane fa-fw"> </i></button>
+						</span>*@
+					</p>
+					<table class="display table table-striped table-sTasked w-100" id="ChurchTable">
+						<thead>
+							<tr class="bg-gradient-gray">
+								<td class=""> Name </td>
+								<td class=""> Note </td>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+</div>
+@section scripts{
+
+	<script>
+		dataArray = JSON.parse('@Html.Raw(ViewBag.userAreasString)');
+		areasdata = dataArray.data;
+
+		var userPinsString = '@Html.Raw(ViewBag.userPinsString)';
+		var userPinsArray = JSON.parse(userPinsString);
+		allLocations = userPinsArray.pins;
+	</script>
+
+	<script>
+
+		function openArea(row) {
+
+			var areaID = $("#AreaID").val();
+			var url=`@Url.Action("ShowArea", "Maps")?areaID=${areaID}`;
+			window.open(url, "_blank");
+		}
+
+		function showDetails(row) {
+
+			$("#ID").val(row.id);
+			$("#VenueName").val(row.venueName);
+			$("#Type").val(row.type);
+			$('#Type').trigger('change');
+			$("#AreaID").val(row.areaID);
+			$('#AreaID').trigger('change');
+			$("#Latitude").val(row.lat);
+			$("#Longitude").val(row.lng);
+			$("#StreetAddress").val(row.streetAddress);
+			$("#Phone1").val(row.phone1);
+			$("#Phone2").val(row.phone2);
+			$("#email").val(row.email);
+			$("#email2").val(row.email2);
+			$("#btnShowDetails").attr("href", `/${row.venueName.replace(/\s/g, "")}/Edit${row.venueName.replace(/\s/g, "")}/${row.id}`);
+			getPrimarySchoolTableRecords();
+			getChurchTableRecords();
+			$.notify("Data has been loaded!", { globalPosition: "top right", className: "success" });
+			//recreateGeocodesOnMap(row.id, row.nm, row.lat, row.lng, row.venueName, row.type, false, "@Model.UserCountry");
+		}
+
+		function setSchoolIcon() {
+			//You can get the index of a dropdown option using the index()
+			var selectedIndex = $("#SREStatusID option:selected").index();
+			var index = Number(selectedIndex + 1);
+			// Set the src attribute of the image element
+			if ($("#type option:selected").val() == "Public")
+				$('#schoolIcon').attr('src', '/media/icons/high-school-' + index + '.png');
+			else if ($("#type option:selected").val() == "Private")
+				$('#schoolIcon').attr('src', '/media/icons/private-high-school-' + index + '.png');
+			else if ($("#type option:selected").val() == "Catholic")
+				$('#schoolIcon').attr('src', '/media/icons/high-catholic-' + index + '.png');
+		}
+		$(document).on("change", "#SREStatusID", function () {
+
+			setSchoolIcon();
+		});
+
+		function setChurchIcon() {
+			//You can get the index of a dropdown option using the index()
+			var selectedIndex = $("#Participate option:selected").index();
+			var index = Number(selectedIndex);
+			// Set the src attribute of the image element
+			if ($("#Participate option:selected").val() == "0")
+				$('#churchIcon').attr('src', '/media/icons/Church-' + index + '.png');
+			else if ($("#Participate option:selected").val() == "1")
+				$('#churchIcon').attr('src', '/media/icons/Church-' + index + '.png');
+			else if ($("#Participate option:selected").val() == "2")
+				$('#churchIcon').attr('src', '/media/icons/Church-' + index + '.png');
+		}
+		$(document).on("change", "#Participate", function () {
+
+			setChurchIcon();
+		});
+		function zoomToLocation(row) {
+
+			recreateGeocodesOnMap(row.id, row.nm, row.lat, row.lng, row.venueName, row.type, false, "@Model.UserCountry");
+		}
+
+		function doFilteration() {
+
+			$(".loaderBar").fadeIn("slow");//Adding the loader bar
+			GetAllLocationsInJson($('#AreaID').val());
+		}
+		function getPrimarySchoolTableRecords() {
+
+			$('#PrimarySchoolTable').DataTable().destroy();
+			$.fn.dataTable.ext.errMode = 'none';    //Suppressing Warnings in DataTables
+			dataTableReceipt = $("#PrimarySchoolTable").DataTable(
+				{
+					"ordering": false, // to disable sorting
+					"processing": true, // for show progress bar
+					//"serverSide": true, // for process server side
+					"filter": true, // this is for disable filter (search box)
+					"orderMulti": false, // for disable multiple column at once
+					"initComplete": function (settings, json) {
+
+						//console.log(json);
+					},
+					"pageLength": 10,
+					"ajax": {
+						//"url": '/PrimarySchool/GetAllPrimaryShcoolsWithHighSchool/,
+						"url": "@Url.Action("GetAllPrimaryShcoolsWithHighSchool", "PrimarySchool")?hsID=" + $("#ID").val(),
+						"type": "GET",
+						"datatype": "json"
+					},
+					"columns": [
+
+						{ "data": "nm", width: '', class: '' },
+						{ "data": "note", width: '', class: '' },
+					],
+					//"order": [[0, "asc",]],
+					"dom": 'tp',
+					"rowCallback": function (row, data, index) {
+						// Add a unique ID to each row using the task ID
+						$(row).attr('id', 'ps_' + data.id);
+
+					}
+				});
+		}
+
+		function getChurchTableRecords() {
+
+			$('#ChurchTable').DataTable().destroy();
+			$.fn.dataTable.ext.errMode = 'none';    //Suppressing Warnings in DataTables
+			dataTableReceipt = $("#ChurchTable").DataTable(
+				{
+					"ordering": false, // to disable sorting
+					"processing": true, // for show progress bar
+					//"serverSide": true, // for process server side
+					"filter": true, // this is for disable filter (search box)
+					"orderMulti": false, // for disable multiple column at once
+					"initComplete": function (settings, json) {
+
+						//console.log(json);
+					},
+					"pageLength": 10,
+					"ajax": {
+						//"url": '/Church/GetAllChurchsWithHighSchool/,
+						"url": "@Url.Action("GetAllChurchsWithHighSchool", "Church")?hsID=" + $("#ID").val(),
+						"type": "GET",
+						"datatype": "json"
+					},
+					"columns": [
+
+						{ "data": "nm", width: '', class: '' },
+						{ "data": "note", width: '', class: '' },
+					],
+					//"order": [[0, "asc",]],
+					"dom": 'tp',
+					"rowCallback": function (row, data, index) {
+						// Add a unique ID to each row using the task ID
+						$(row).attr('id', 'ps_' + data.id);
+
+					}
+				});
+		}
+
+		function GetAllLocationsInJson(areaID=0) {
+
+			$('#example').DataTable().destroy();
+			$("#example").DataTable(
+				{
+					//"processing": true, // for show progress bar
+					//"serverSide": true, // for process server side
+					"filter": true, // this is for disable filter (search box)
+					"orderMulti": false, // for disable multiple column at once
+					"pageLength": 9999999999,
+					"initComplete": function (settings, json) {
+						//console.log(json);
+						allLocations = json.data;//getting all locations for pins
+
+						$(".loaderBar").fadeOut("slow");//Removing the loader bar
+					},
+					"ajax": {
+						//"url": "/Home/GetAllLocationsInJson",
+						"url": "@Url.Action("GetAllLocationsInJson", "Maps")?locationType=" + $("#locationType").val() + "&areaID=" + areaID,
+						"type": "GET",
+						"datatype": "json"
+					},
+					"columns": [
+						//{ "data": "id" },
+						{ "data": "typeAliases", width: '0px' },
+						{ "data": "nm" },
+						{ "data": "streetAddress" },
+						{ "data": "suburbName" },
+						{ "data": "stateName" },
+						{
+							"data": "Lat", "render": function (data, type, full, meta) {
+								return `
+																										<div class="btn-group">
+																											<button type="button" class="btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+																												<span class="caret"></span>
+																											</button>
+																											<ul class="dropdown-menu dropdown-menu-right">
+																																<li><a onclick='showDetails(${JSON.stringify(full)})' class='dropdown-item btn text-success'> <i class='fa fa-truck-loading'> </i> Load Data</a></li>
+																														<li role="separator" class="dropdown-divider"></li>
+																																										<li><a onclick='zoomToLocation(${JSON.stringify(full)})' class='dropdown-item btn text-warning'> <i class="fas fa-search-plus"></i> Zoom Location</a></li>
+																														<li role="separator" class="dropdown-divider"></li>
+																																<li><a onclick='openArea(${JSON.stringify(full)})' class='dropdown-item btn text-primary'> <i class='fas fa-map-marker-alt'> </i> Open Area</a></li>
+																											</ul>
+																										 </div>
+																										`
+							},
+							"orderable": false
+						}
+					],
+					"order": [[0, "asc",]],
+					"scrollY": "400px",
+					"scrollX": true,
+					"dom": 'frt',
+					//responsive: true
+				});
+		}
+
+		$(document).ready(function () {
+
+			$(".loaderBar").fadeIn("slow");//Adding the loader bar
+			GetAllLocationsInJson(0);
+
+			initialize("@Model.UserCountry");
+			recreateGeocodesOnMap('null', 'null', 'null', 'null', 'null', 'null', true, "@Model.UserCountry");
+
+			// Make the dashboard widgets sortable Using jquery UI
+			$('.connectedSortable').sortable({
+				placeholder: 'sort-highlight',
+				connectWith: '.connectedSortable',
+				handle: '.card-header, .nav-tabs',
+				forcePlaceholderSize: true,
+				zIndex: 999999
+			})
+			$('.connectedSortable .card-header').css('cursor', 'move');
+		});
+
+	</script>
+}

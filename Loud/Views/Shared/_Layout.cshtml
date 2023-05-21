@@ -1,0 +1,189 @@
+﻿@{
+    ViewData["WebSiteTitle"] = "Love Out Loud";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewData["Title"] - @ViewData["WebSiteTitle"]</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="~/adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="~/adminlte/plugins/jqvmap/jqvmap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/adminlte/dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="~/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="~/adminlte/plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="~/adminlte/plugins/summernote/summernote-bs4.min.css">
+    <!-- J-query Notifications -->
+    <link href="~/lib/jquerynotifications/jquery-notifications.css" rel="stylesheet" />
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <!-- Summer Note -->
+    <link href="~/lib/summernote/summernote.min.css" rel="stylesheet" />
+    <!-- J-Query UI-->
+    <link href="~/lib/jquery-ui-1.12.1/jquery-ui.min.css" rel="stylesheet" />
+    <!-- Select 2 -->
+    <link href="~/adminlte/plugins/select2/css/select2.min.css" rel="stylesheet" />
+    <!-- Parsley -->
+    <link href="~/lib/parsley/parsley.css" rel="stylesheet" />
+    <!-- Custom site styling -->
+    <link href="~/css/site.css" rel="stylesheet" />
+    @*<link href="~/css/bootstrap-extented.css" rel="stylesheet" />*@
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+
+        <!-- Preloader -->
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="~/adminlte/dist/img/AdminLTELogo.png" alt="Logo" height="60" width="60">
+        </div>
+
+        <!-- Navbar -->
+        <partial name="_Navbar" />
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+        <partial name="_SidebarNav" />
+        <!-- /.Main Sidebar Container -->
+        <!-- Content Wrapper. Contains page content -->
+        @RenderBody()
+        <!-- /.content-wrapper -->
+
+        <footer class="main-footer">
+            <strong>Copyright &copy; @DateTime.Now.Year </strong>
+            All rights reserved.
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Version</b> 1.0.0
+            </div>
+        </footer>
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+    </div>
+    <!-- ./wrapper -->
+    <!-- jQuery -->
+    <script src="~/adminlte/plugins/jquery/jquery.min.js"></script>
+    <!-- Masking Input -->
+    <script src="~/lib/maskinginput/masking-input.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- ChartJS -->
+    <script src="~/adminlte/plugins/chart.js/Chart.min.js"></script>
+    <!-- Sparkline -->
+    <script src="~/adminlte/plugins/sparklines/sparkline.js"></script>
+    <!-- JQVMap -->
+    <script src="~/adminlte/plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="~/adminlte/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="~/adminlte/plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="~/adminlte/plugins/moment/moment.min.js"></script>
+    <script src="~/adminlte/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="~/adminlte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- Summernote -->
+    <script src="~/adminlte/plugins/summernote/summernote-bs4.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="~/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- J-query Notifications -->
+    <script src="~/lib/jquerynotifications/jquery-notifications.js"></script>
+    <!-- DataTables  & Plugins -->
+    <script src="~/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/adminlte/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/adminlte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/adminlte/plugins/jszip/jszip.min.js"></script>
+    <script src="~/adminlte/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="~/adminlte/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="~/adminlte/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/adminlte/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/adminlte/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <!-- Summer Note -->
+    <script src="~/lib/summernote/summernote.min.js"></script>
+    <!-- J-Query UI-->
+    <script src="~/lib/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+    <!-- Moment Library to convert date in any format -->
+    <script src="~/lib/moment/moment.min.js"></script>
+    <!-- Select 2 -->
+    <script src="~/adminlte/plugins/select2/js/select2.min.js"></script>
+    <!-- Parsley -->
+    <script src="~/lib/parsley/parsley.min.js"></script>
+    <!-- Notifyjs -->
+    <script src="~/lib/notifyjs/notifications.min.js"></script>
+    <!-- Google Maps -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEDdTqyyCHunwaTc0XCE8M-muXz_mx-WM&libraries=visualization"></script>
+    <!-- Custom site JS -->
+    <script src="~/js/GoogleMapsHandlingSite.js"></script>
+    <script src="~/js/mysite.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/adminlte/dist/js/adminlte.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/adminlte/dist/js/demo.js"></script>
+    <!-- To open a form as a popup form -->
+    <script src="~/js/popup.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Scripts_1", required: false)
+    @await RenderSectionAsync("Scripts_2", required: false)
+    @await RenderSectionAsync("Scripts_3", required: false)
+
+    <script>
+        $(document).ready(function () {
+
+
+            //This should trigger the side bar menu to collapse
+            $('a[data-widget="pushmenu"]').click();
+
+            $('.select2').select2({
+                placeholder: "Select an option...",
+                theme: "classic",
+                width: "100%"
+            });
+            //To add Summernote
+            $('textarea').summernote();
+
+            //Making Short-cut Keys to add and remove Summernote 
+            document.addEventListener('keydown', function (event) {
+                //To remove Summernote from all textarea elements on a page
+                if (event.ctrlKey && event.shiftKey && event.key === 'E') {
+                    //To remove Summernote
+                    $('textarea').each(function () {
+                        $(this).summernote('destroy');
+                    });
+                }
+                //To add Summernote to all textarea elements on a page
+                else if (event.ctrlKey && event.shiftKey && event.key === 'U') {
+                    //To remove Summernote
+                    $('textarea').each(function () {
+                        $(this).summernote('destroy');
+                    });
+                    //To add Summernote
+                    $('textarea').summernote();
+                }
+            });
+
+        });
+
+    </script>
+</body>
+</html>

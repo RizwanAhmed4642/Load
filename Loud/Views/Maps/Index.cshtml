@@ -1,0 +1,49 @@
+﻿@model ApplicationUser
+@{
+    ViewData["Title"] = "Venues Map";
+}
+
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <div class="row pt-2">
+            <div class="col-xl-12">
+                @*<h1 class="text-center font-weight-bold">@ViewData["Title"]</h1>
+                <hr />*@
+                <p>@ViewData["Message"]</p>
+                <div id="map" style="height: 800px; width: 100%;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+
+        <script>
+            dataArray= JSON.parse('@Html.Raw(ViewBag.userAreasString)');
+            areasdata = dataArray.data;
+
+            var userPinsString = '@Html.Raw(ViewBag.userPinsString)';
+            var userPinsArray = JSON.parse(userPinsString);
+
+            allLocations=userPinsArray.pins;
+        </script>
+
+        <script>
+
+            $(document).ready(function () {
+
+                initialize("@Model.UserCountry");
+                recreateGeocodesOnMap('null', 'null', 'null', 'null', 'null', 'null', true,"@Model.UserCountry");
+
+                // Make the dashboard widgets sortable Using jquery UI
+                $('.connectedSortable').sortable({
+                    placeholder: 'sort-highlight',
+                    connectWith: '.connectedSortable',
+                    handle: '.card-header, .nav-tabs',
+                    forcePlaceholderSize: true,
+                    zIndex: 999999
+                })
+                $('.connectedSortable .card-header').css('cursor', 'move');
+            });
+
+        </script>
+}

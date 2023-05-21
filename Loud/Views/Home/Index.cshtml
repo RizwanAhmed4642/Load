@@ -1,0 +1,476 @@
+﻿@model ApplicationUser
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="content-wrapper">
+
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Dashboard</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    @*<ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Dashboard</li>
+                    </ol>*@
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>@ViewBag.totalArea</h3>
+
+                            <p>Areas</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <a href="/Area/Index" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h3>@ViewBag.totalSRERep</h3>
+
+                            <p>SRE Representative</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <a href="/SRERep/Index" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-success">
+                        <div class="inner">
+                            <h3>@ViewBag.totalSREBoard</h3>
+
+                            <p>SRE Boards</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-chess-board"></i>
+                        </div>
+                        <a href="/SREBoard/Index" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3>@ViewBag.totalMinister</h3>
+
+                            <p>Ministers</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-solid fa-gavel"></i>
+                        </div>
+                        <a href="/Minister/Index" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-secondary">
+                        <div class="inner">
+                            <h3>@ViewBag.totalMinisterFraternal</h3>
+
+                            <p>Minister Fraternal</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-solid fa-handshake"></i>
+                        </div>
+                        <a href="/MinisterFraternal/Index" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-primary">
+                        <div class="inner">
+                            <h3>@ViewBag.totalMinistry</h3>
+
+                            <p>Ministry</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-solid fa-hands-helping"></i>
+                        </div>
+                        <a href="/Ministry/Index" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-purple">
+                        <div class="inner">
+                            <h3>@ViewBag.totalTrip</h3>
+
+                            <p>Trips</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-solid fa-plane"></i>
+                        </div>
+                        <a href="/Trip/Index" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-orange">
+                        <div class="inner">
+                            <h3>@ViewBag.totalTask</h3>
+
+                            <p>Activities</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-solid fa-running"></i>
+                        </div>
+                        <a href="/Task/Index" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+            </div>
+            <!-- /.row -->
+            <!-- Second row of cards -->
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-user-nurse"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Chaplains</span>
+                            <span class="info-box-number">
+                                @ViewBag.totalChaplain
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-church"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Churches</span>
+                            <span class="info-box-number">@ViewBag.totalChurch</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="clearfix hidden-md-up"></div>
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-success elevation-1"><i class="fas fa-school"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">High Schools</span>
+                            <span class="info-box-number">@ViewBag.totalHighSchool</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Total Users</span>
+                            <span class="info-box-number">@ViewBag.totalUsers</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-gradient-secondary elevation-1"><i class="fas fa-city"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">States</span>
+                            <span class="info-box-number">@ViewBag.totalState</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-orange elevation-1"><i class="fas fa-warehouse"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Suburb</span>
+                            <span class="info-box-number">@ViewBag.totalSuburb</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-school"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Primary School</span>
+                            <span class="info-box-number">@ViewBag.totalPrimarySchool</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-purple elevation-1"><i class="fas fa-graduation-cap"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">School Grades</span>
+                            <span class="info-box-number">@ViewBag.totalSchoolGrade</span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.row -->
+            <!-- Main row -->
+            <div class="row">
+                <!-- right col (We are only adding the ID to make the widgets sortable)-->
+                <section class="col-xl-6 connectedSortable">
+                    <!-- Map card -->
+                    <div class="card bg-gradient-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </h3>
+                            <!-- card tools -->
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                            <!-- /.card-tools -->
+                        </div>
+                        <div class="card-body">
+                            @*on dashboard you can set the width and height of Map*@
+                            <div id="map" class="mb-5" style="width: 100%;height:450px;"></div>
+                        </div>
+                        <!-- /.card-body-->
+                        <div class="card-footer bg-transparent">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                </div>
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                    </div>
+                </section>
+                <!-- right col -->
+                <!-- Left col -->
+                <section class="col-xl-6 connectedSortable">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">@Model.FirstName Current Areas</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <table class="display table table-striped table-borderless w-100" id="areasTable">
+                                <thead>
+                                    <tr>
+                                        <td>
+                                            Name
+                                        </td>
+                                        <td>
+                                            Start Lat
+                                        </td>
+                                        <td>
+                                            Start Lng
+                                        </td>
+                                        <td>
+                                            End Lat
+                                        </td>
+                                        <td>
+                                            End Lng
+                                        </td>
+                                        @*<td>
+                                        SAS Church Partner ID
+                                        </td>
+                                        <td>
+                                        Colour
+                                        </td>
+                                        <td>
+                                        <button type="button" onclick="makeSelectedAll('.btnRemoveAllAreas')" class="btn btn-sm btn-success">Select All</button>
+                                        </td>*@
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+                <!-- /.Left col -->
+            </div>
+            <!-- /.row (main row) -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+
+@section scripts{
+    @*<script src="~/lib/markerclustererplus/dist/index.min.js"></script>*@
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+
+    @*<script src="~/js/GoogleMapsHandlingSite.js"></script>*@
+
+    <script>
+        dataArray= JSON.parse('@Html.Raw(ViewBag.userAreasString)');
+        areasdata = dataArray.data;
+
+        var userPinsString = '@Html.Raw(ViewBag.userPinsString)';
+        var userPinsArray = JSON.parse(userPinsString);
+
+
+        allLocations=userPinsArray.pins;
+    </script>
+
+    <script>
+
+        function getAreasTableRecords() {
+            $('#areasTable').DataTable().destroy();
+            $.fn.dataTable.ext.errMode = 'none';    //Suppressing Warnings in DataTables
+            dataTableReceipt = $("#areasTable").DataTable(
+                {
+                    "processing": true, // for show progress bar
+                    //"serverSide": true, // for process server side
+                    "filter": true, // this is for disable filter (search box)
+                    "orderMulti": false, // for disable multiple column at once
+                    "initComplete": function (settings, json) {
+
+                        //console.log(json);
+                    },
+                    "pageLength": 10,
+                    "ajax": {
+                        //"url": '/UserAreas/GetAllUserAreasWithUserIDInJson/,
+                        //"url": "@Url.Action("GetAllAreasInJson", "Area")",
+                        "url": '@Url.Action("GetAllUserAreasWithUserIDInJson", "UserAreas")/?UserID=@Model.Id',
+                        "type": "GET",
+                        "datatype": "json"
+                    },
+                    "columns": [
+                        { "data": "nm", width: '', class: '' },
+                        { "data": "startLat", width: '', class: '' },
+                        { "data": "startLng" },
+                        { "data": "endLat", width: '', class: '' },
+                        { "data": "endLng", width: '', class: '' },
+                        //{ "data": "sASChurchPartnerID", width: '', class: '' },
+                        //{ "data": "colour", width: '', class: '' },
+                        //{
+                        //    "data": null, width: '', class: '',
+                        //    "render": function (data, type, full, meta) {
+                        //        var id = full["userAreaID"];
+
+                        //        return '<input type="checkbox" class="btnRemoveAllAreas" name = "removeSelectedAreas" value = "' + id + '" />'
+                        //    },
+                        //    "orderable": false,
+                        //    "searchable": false
+                        //}
+                    ],
+                    "order": [[0, "asc",]],
+                    "dom": 'lfrtBip',
+                    "buttons": [
+                        {
+                            extend: 'copy',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-clone"></i> Copy'
+                        },
+                        {
+                            extend: 'excel',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file-excel-o"></i> Excel'
+                        },
+                        {
+                            extend: 'csv',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file"></i> CSV'
+                        },
+                        {
+                            extend: 'pdf',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file-pdf-o"></i> PDF'
+                        },
+                        {
+                            extend: 'print',
+                            messageTop: '<br> ',
+                            messageBottom: '<br> ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-print"></i> Print'
+                        },
+                        //'colvis'
+                    ],
+                    responsive: true
+                });
+        }
+
+        $(document).ready(function () {
+
+            initialize("@Model.UserCountry");
+            getAreasTableRecords();
+            recreateGeocodesOnMap('null', 'null', 'null', 'null', 'null', 'null', true, "@Model.UserCountry");
+
+            // Make the dashboard widgets sortable Using jquery UI
+            $('.connectedSortable').sortable({
+                placeholder: 'sort-highlight',
+                connectWith: '.connectedSortable',
+                handle: '.card-header, .nav-tabs',
+                forcePlaceholderSize: true,
+                zIndex: 999999
+            })
+            $('.connectedSortable .card-header').css('cursor', 'move');
+        });
+
+    </script>
+}

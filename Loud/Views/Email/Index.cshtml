@@ -1,0 +1,209 @@
+﻿@{
+    ViewData["Title"] = "Emails List";
+}
+
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <div class="row pt-2">
+            <div class="col-xl-12">
+                <h1 class="text-center font-weight-bold">@ViewData["Title"]</h1>
+                <hr />
+                <p>@ViewData["Message"]</p>
+                <a href="@Url.Action("Create", "Email")" class="btn btn-primary mb-2">
+                    <i class="fas fa-plus"></i>
+                    Create Email
+                </a>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Emails List</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="display table table-striped table-borderless w-100" id="EmailsTable">
+                            <thead>
+                                <tr>
+                                    <td class=""> From </td>
+                                    <td class=""> To </td>
+                                    <td class=""> Subject </td>
+                                    <td class=""> Sendby </td>
+                                    <td>Actions</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+
+
+    <script>
+
+        function Delete(id) {
+
+            $.confirm({
+                title: 'Delete',
+                content: 'Are you sure to delete this record?',
+                icon: 'fa fa-question-circle-o',
+                theme: 'supervan',
+                closeIcon: true,
+                animation: 'scale',
+                type: 'orange',
+                buttons: {
+                    cancel: {
+                        text: 'Cancel',
+                        btnClass: 'btn-blue',
+                        keys: ['esc'],
+                        action: function () {
+
+                            $(".loaderBar").fadeOut("slow");
+                        }
+                    },
+                    confirm: {
+                        text: 'Delete',
+                        btnClass: 'btn-red',
+                        keys: ['enter', 'shift'],
+                        action: function () {
+
+                            $(".loaderBar").fadeIn("slow");
+                            $.ajax({
+
+                                type: "POST",
+                                url: '@Url.Action("DeleteEmail", "Email")?id=' + id,
+                                success: function (data) {
+
+                                    if (data.success) {
+                                        $(".loaderBar").fadeOut("slow");
+                                        $.notify("Deleted Successfully", { globalPosition: "top right", className: "success" });
+                                        //Loading the Grid Records
+                                        getEmailsTableRecords();
+                                    }
+                                },
+                                error: function () { alert('Error:'); $(".loaderBar").fadeOut("slow"); }
+                            });
+                            //reload the page after 1 second
+                            //Sleep for 1 seconds and then redirect to home
+                            //setTimeout(function () { location.reload(); }, 1000);
+                        }
+                    }
+                }
+            });
+
+        }
+        function getEmailsTableRecords() {
+            $('#EmailsTable').DataTable().destroy();
+            $.fn.dataTable.ext.errMode = 'none';    //Suppressing Warnings in DataTables
+            dataTableReceipt = $("#EmailsTable").DataTable(
+                {
+                    "processing": true, // for show progress bar
+                    //"serverSide": true, // for process server side
+                    "filter": true, // this is for disable filter (search box)
+                    "orderMulti": false, // for disable multiple column at once
+                    "initComplete": function (settings, json) {
+
+                        console.log(json);
+                    },
+                    "pageLength": 10,
+                    "ajax": {
+                        //"url": '/Email/GetAllEmailsInJson/,
+                        "url": "@Url.Action("GetAllEmailsInJson", "Email")",
+                        "type": "GET",
+                        "datatype": "json"
+                    },
+                    "columns": [
+                        { "data": "fromEmail", width: '', class: '' },
+                        { "data": "toEmail", width: '', class: '' },
+                        { "data": "subject", width: '', class: '' },
+                        { "data": "sendby", width: '', class: '' },
+                        {
+                            "data": null, width: '', class: '',
+                            "render": function (data, type, full, meta) {
+                                var id = full["id"];
+                                return "<a href='@Url.Action("EditEmail", "Email")/" + id + "' target='_blank' class='btn btn-sm btn-primary' id='btnEditEmail' title='Edit' onclick=''><i class='fas fa-eye'> </i> </a> <a class='btn btn-sm btn-danger' id='btnDeleteEmail' title='Delete' onclick='Delete(\"" + id + "\")'><i class='fas fa-trash'> </i> </a>"
+                            },
+                            "orderable": false,
+                            "searchable": false
+                        }
+                    ],
+                    "order": [[0, "asc",]],
+                    "dom": 'lfrtBip',
+                    "buttons": [
+                        {
+                            extend: 'copy',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-clone"></i> Copy'
+                        },
+                        {
+                            extend: 'excel',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file-excel-o"></i> Excel'
+                        },
+                        {
+                            extend: 'csv',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file"></i> CSV'
+                        },
+                        {
+                            extend: 'pdf',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file-pdf-o"></i> PDF'
+                        },
+                        {
+                            extend: 'print',
+                            messageTop: '<br> ',
+                            messageBottom: '<br> ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-print"></i> Print'
+                        },
+                        'colvis'
+                    ],
+                    responsive: true
+                });
+        }
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            getEmailsTableRecords();
+        });
+    </script>
+
+    }

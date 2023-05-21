@@ -1,0 +1,159 @@
+﻿@{
+    ViewData["Title"] = "SRE Board Tasks List";
+}
+
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <div class="row pt-2">
+            <div class="col-xl-12">
+                <h1 class="text-center font-weight-bold">@ViewData["Title"]</h1>
+                <hr />
+                <p>@ViewData["Message"]</p>
+                <a href="@Url.Action("Create", "SREBoardTask")" class="btn btn-primary mb-2">
+                    <i class="fas fa-plus"></i>
+                    Create SRE Board Task
+                </a>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">SRE Board Task List</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="display table table-sSREBoardTasked table-borderless w-100" id="SREBoardTasksTable">
+                            <thead>
+                                <tr>
+                                <tr>
+                                    <td class=""> SRE Board </td>
+                                    <td class=""> SRE Task Type </td>
+                                    <td class=""> Assign To </td>
+                                    <td class=""> Start Date </td>
+                                    <td class=""> Subject </td>
+                                        @*<td>Actions</td>*@
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+
+
+    <script>
+
+        function getSREBoardTasksTableRecords() {
+            $('#SREBoardTasksTable').DataTable().destroy();
+            $.fn.dataTable.ext.errMode = 'none';    //Suppressing Warnings in DataTables
+            dataTableReceipt = $("#SREBoardTasksTable").DataTable(
+                {
+                    "processing": true, // for show progress bar
+                    //"serverSide": true, // for process server side
+                    "filter": true, // this is for disable filter (search box)
+                    "orderMulti": false, // for disable multiple column at once
+                    "initComplete": function (settings, json) {
+
+                        //console.log(json);
+                    },
+                    "pageLength": 10,
+                    "ajax": {
+                        //"url": '/SREBoardTask/GetAllSREBoardTasksInJson/,
+                        "url": "@Url.Action("GetAllSREBoardTasksInJson", "SREBoardTask")",
+                        "type": "GET",
+                        "datatype": "json"
+                    },
+                    "columns": [
+
+                        { "data": "sreBoardName", width: '', class: '' },
+                        { "data": "sreBoardTaskTypeName", width: '', class: '' },
+                        { "data": "assignToName", width: '', class: '' },
+                        {
+                            "data": null,
+                            class: '',
+                            "render": function (data, type, full, meta) {
+
+                                return moment(full["startDate"]).format('MM-DD-YYYY');//converting datetime into string with moment.js function
+                            }
+                        },
+                        { "data": "subject", width: '', class: '' }
+                    ],
+                    "order": [[0, "asc",]],
+                    "dom": 'lfrtBip',
+                    "buttons": [
+                        {
+                            extend: 'copy',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-clone"></i> Copy'
+                        },
+                        {
+                            extend: 'excel',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file-excel-o"></i> Excel'
+                        },
+                        {
+                            extend: 'csv',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file"></i> CSV'
+                        },
+                        {
+                            extend: 'pdf',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file-pdf-o"></i> PDF'
+                        },
+                        {
+                            extend: 'print',
+                            messageTop: '<br> ',
+                            messageBottom: '<br> ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-print"></i> Print'
+                        },
+                        'colvis'
+                    ],
+                    responsive: true
+                });
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            getSREBoardTasksTableRecords();
+        });
+    </script>
+
+    }

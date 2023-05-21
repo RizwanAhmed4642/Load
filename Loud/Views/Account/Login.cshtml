@@ -1,0 +1,398 @@
+﻿@using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
+@model SAS.Models.ViewModels.AccountViewModels.LoginViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+
+@{
+    ViewData["Title"] = "Log in";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Love out Load | Login</title>
+    <style>
+        /* Modal styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #888;
+            cursor: pointer;
+        }
+    </style>
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="~/adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="~/adminlte/plugins/jqvmap/jqvmap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/adminlte/dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="~/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="~/adminlte/plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="~/adminlte/plugins/summernote/summernote-bs4.min.css">
+    <!-- Parsley -->
+    <link href="~/lib/parsley/parsley.css" rel="stylesheet" />
+    <!-- J-query Notifications -->
+    <link href="~/lib/jquerynotifications/jquery-notifications.css" rel="stylesheet" />
+    <!-- Custom site styling -->
+    <link href="~/css/site.css" rel="stylesheet" />
+
+</head>
+<body class="hold-transition login-page">
+    @*<div class="loaderBar"></div>*@
+    <div class="login-box">
+       @*<div class="login-logo animated fadeInDown">
+            <a href="/"><b>SAS</b> Login</a>
+        </div>*@
+        <!-- /.login-logo -->
+        <div class="card">
+            <div class="card-body login-card-body">
+                <!-- Brand Logo -->
+                <a href="/" class="brand-link" style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                    <img src="~/adminlte/dist/img/AdminLTELogo.png" alt="SAS Logo" class="img-circle" style="height:100px;width:100;">
+                    <br />
+                    <span class="brand-text font-weight-light">Love Out Loud</span>
+                </a>
+
+                <p class="login-box-msg">Sign in to start your session</p>
+
+                <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" id="mainForm" data-parsley-validate>
+
+                    <div class="input-group mb-3">
+                        <input asp-for="Email" type="email" class="form-control" placeholder="Email" required="required" />
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input asp-for="Password" class="form-control" placeholder="Password" required="required" />
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="icheck-primary">
+                                <input asp-for="RememberMe" type="checkbox" id="remember">
+                                <label for="remember">
+                                    @Html.DisplayNameFor(m => m.RememberMe)
+                                </label>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-4">
+                            <button type="button" onclick="submitForm();" id="btnSubmitForm" class="btn btn-primary btn-block">Sign In</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+
+                <div class="social-auth-links text-center mb-3">
+                    <p>- OR -</p>
+                    <p class="mb-1">
+                        <a asp-action="ForgotPassword">I forgot my password</a>
+                    </p>
+                </div>
+                <!-- /.social-auth-links -->
+
+            </div>
+            <!-- /.login-card-body -->
+        </div>
+    </div>
+
+    <div class="modal" id="myModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()" hidden="hidden">&times;</span>
+            <div class="col-xl-12 text-center">
+                <p>We sent you a six-digit OTP on your Email. Please check your E-mail.</p>
+                <input type="text" class="form-control form-control-sm mt-5" placeholder="Enter OTP" name="otp" id="otp">
+                <br />
+                <a onclick="ResendOTP();" class="btn text-info">Resend OTP</a>
+            </div>
+            <div class="col-xl-12 text-center">
+                <button class="btn btn-sm btn-primary mt-5 cen w-25" id="btnOtp" onclick="CheckOTP()">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.temp = 0;
+        $(document).ready(function () {
+
+
+        });
+
+        function validateMainForm() {
+
+            if ($('#mainForm').parsley().validate()) {
+                return true;
+            } else {
+                $.notify("Some fields are required.", { position: "top right", className: "error" });
+                return false;
+            }
+
+        }
+
+        function submitForm() {
+            if (validateMainForm()) {
+
+                $(".loaderBar").fadeIn("slow");
+                let myform = document.getElementById("mainForm");
+                // Serializing the whole form data to submit
+                let fd = new FormData(myform);
+                let url = "";
+                url = '@Url.Action("CheckIsUserHas2Fact", "Account")';
+                $.ajax({
+                    url: url,
+                    data: fd,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    success: function (data) {
+
+                        if (data.success) {
+
+                            $(".loaderBar").fadeOut("slow");
+                            $.notify(data.message, { globalPosition: "top right", className: data.flag });
+                            //Refresh the form controls for next record
+                            //$("#mainForm").trigger("reset");
+                            openModal();
+                            window.temp = data.otp;
+                            //reload the page after 1 second
+                            //Sleep for 1 seconds and then redirect to home
+                            //setTimeout(function () { location.reload(); }, 1000);
+
+                        }
+                        else {
+
+                            submitLoginForm();
+                            //$.notify(data.message, { globalPosition: "top right", className: data.flag });
+                        }
+                    }
+                });
+            }
+        }
+
+        function submitLoginForm() {
+            if (validateMainForm()) {
+
+                $(".loaderBar").fadeIn("slow");
+                let myform = document.getElementById("mainForm");
+                // Serializing the whole form data to submit
+                let fd = new FormData(myform);
+                let url = "";
+                url = '@Url.Action("Login", "Account")';
+                $.ajax({
+                    url: url,
+                    data: fd,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    success: function (data) {
+
+                        if (data.success) {
+
+                            $(".loaderBar").fadeOut("slow");
+                            if (data.success != false) {
+                                $.notify(data.message, { globalPosition: "top right", className: data.flag });
+                                //Refresh the form controls for next record
+                                //$("#mainForm").trigger("reset");
+                                //Sleep for 3 seconds and then redirect to home
+                                setTimeout(function () { window.location.href = "/"; }, 3000);
+
+                            }
+                            else
+                            {
+                                $.notify(data.message, { globalPosition: "top right", className: data.flag });
+                                //setTimeout(function () { window.location.href = "Account/Login"; }, 3000);
+                            }
+
+                        }
+                    }
+                });
+            }
+        }
+
+        function ResendOTP() {
+            if (validateMainForm()) {
+
+                $(".loaderBar").fadeIn("slow");
+                let myform = document.getElementById("mainForm");
+                // Serializing the whole form data to submit
+                let fd = new FormData(myform);
+                let url = "";
+                url = '@Url.Action("ResendOTP", "Account")';
+                $.ajax({
+                    url: url,
+                    data: fd,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    success: function (data) {
+
+                        if (data.success) {
+
+                            $(".loaderBar").fadeOut("slow");
+                            $.notify(data.message, { globalPosition: "top right", className: data.flag });
+                            //Refresh the form controls for next record
+                            //$("#mainForm").trigger("reset");
+                            openModal();
+                            window.temp = data.otp;
+                            //reload the page after 1 second
+                            //Sleep for 1 seconds and then redirect to home
+                            //setTimeout(function () { location.reload(); }, 1000);
+
+                        }
+                        else {
+
+                            submitLoginForm();
+                            //$.notify(data.message, { globalPosition: "top right", className: data.flag });
+                        }
+                    }
+                });
+            }
+        }
+
+        function CheckOTP() {
+            if (validateMainForm()) {
+
+                $(".loaderBar").fadeIn("slow");
+                let myform = document.getElementById("mainForm");
+                // Serializing the whole form data to submit
+                let fd = new FormData(myform);
+                let url = "";
+                url = '@Url.Action("CheckOTP", "Account")';
+                let uotp = $("#otp").val();
+                $.ajax({
+                    url: url,
+                    data: { totp: window.temp, uotp: uotp },
+                    //cache: false,
+                    //processData: false,
+                    //contentType: false,
+                    type: 'POST',
+                    success: function (data) {
+
+                        $(".loaderBar").fadeOut("slow");
+                        if (data.success) {
+
+                            //$.notify(data.message, { globalPosition: "top right", className: data.flag });
+                            if (data.flag == "success")
+                                submitLoginForm();
+                            //Refresh the form controls for next record
+                            //$("#mainForm").trigger("reset");
+                            //Sleep for 3 seconds and then redirect to home
+
+                        }
+                        else {
+                            $.notify(data.message, { globalPosition: "top right", className: data.flag });
+                        }
+                    }
+                });
+            }
+        }
+        // Open the modal
+        function openModal() {
+            document.getElementById("myModal").style.display = "block";
+        }
+
+        // Close the modal
+        function closeModal() {
+            document.getElementById("myModal").style.display = "none";
+        }
+
+    </script>
+    <!-- ./wrapper -->
+    <!-- jQuery -->
+    <script src="~/adminlte/plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="~/adminlte/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>$.widget.bridge('uibutton', $.ui.button)</script>
+    <!-- Bootstrap 4 -->
+    <script src="~/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- ChartJS -->
+    <script src="~/adminlte/plugins/chart.js/Chart.min.js"></script>
+    <!-- Sparkline -->
+    <script src="~/adminlte/plugins/sparklines/sparkline.js"></script>
+    <!-- JQVMap -->
+    <script src="~/adminlte/plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="~/adminlte/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="~/adminlte/plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="~/adminlte/plugins/moment/moment.min.js"></script>
+    <script src="~/adminlte/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="~/adminlte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- Summernote -->
+    <script src="~/adminlte/plugins/summernote/summernote-bs4.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="~/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- Parsley -->
+    <script src="~/lib/parsley/parsley.min.js"></script>
+    <!-- Notifyjs -->
+    <script src="~/lib/notifyjs/notifications.min.js"></script>
+    <!-- J-query Notifications -->
+    <script src="~/lib/jquerynotifications/jquery-notifications.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/adminlte/dist/js/adminlte.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/adminlte/dist/js/demo.js"></script>
+    <!-- Custom site JS -->
+    <script src="~/js/site.js"></script>
+</body>
+</html>
+
+<!-- /.login-box -->
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

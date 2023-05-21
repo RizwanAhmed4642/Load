@@ -1,0 +1,214 @@
+﻿@{
+    ViewData["Title"] = "CurrentStatus List";
+}
+
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <div class="row pt-2">
+            <div class="col-xl-12">
+                <h1 class="text-center font-weight-bold">@ViewData["Title"]</h1>
+                <hr />
+                <p>@ViewData["Message"]</p>
+                <a href="@Url.Action("Create", "CurrentStatus")" class="btn btn-primary mb-2">
+                    <i class="fas fa-plus"></i>
+                    Create SRE Status
+                </a>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">SRE Status List</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="display table table-striped table-borderless w-100" id="CurrentStatussTable">
+                            <thead>
+								<tr>
+									<td class=""> ID </td>
+									<td class=""> Name  </td>
+									<td class=""> High School Icon </td>
+									<td class=""> Primary School Icon </td>
+									<td class=""> P.High School Icon </td>
+									<td class=""> P.Primary School Icon </td>
+									<td class=""> High Catholic Icon </td>
+									<td class=""> Primary Catholic Icon </td>
+									@*<td>Actions</td>*@
+								</tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+
+
+    <script>
+
+		function getCurrentStatussTableRecords() {
+			$('#CurrentStatussTable').DataTable().destroy();
+			$.fn.dataTable.ext.errMode = 'none';    //Suppressing Warnings in DataTables
+			dataTableReceipt = $("#CurrentStatussTable").DataTable(
+				{
+					"processing": true, // for show progress bar
+					//"serverSide": true, // for process server side
+					"filter": true, // this is for disable filter (search box)
+					"orderMulti": false, // for disable multiple column at once
+					"initComplete": function (settings, json) {
+
+						//console.log(json);
+					},
+					"pageLength": 10,
+					"ajax": {
+						//"url": '/CurrentStatus/GetAllCurrentStatussInJson/,
+						"url": "@Url.Action("GetAllCurrentStatussInJson", "CurrentStatus")",
+						"type": "GET",
+						"datatype": "json"
+					},
+					"columns": [
+						{ "data": "id", width: '', class: '' },
+						{ "data": "nm", width: '', class: '' },
+						{
+							"data": null, width: '', class: '',
+							"render": function (data, type, full, meta) {
+								var id = full["id"];
+								return `<img src='/media/icons/high-school-${id}.png' width='26px' height='32px' />`
+							},
+							"orderable": false,
+							"searchable": false
+						},
+						{
+							"data": null, width: '', class: '',
+							"render": function (data, type, full, meta) {
+								var id = full["id"];
+								return `<img src='/media/icons/primary-school-${id}.png' width='26px' height='32px' />`
+							},
+							"orderable": false,
+							"searchable": false
+						},
+						{
+							"data": null, width: '', class: '',
+							"render": function (data, type, full, meta) {
+								var id = full["id"];
+								return `<img src='/media/icons/private-high-school-${id}.png' width='26px' height='32px' />`
+							},
+							"orderable": false,
+							"searchable": false
+						},
+						{
+							"data": null, width: '', class: '',
+							"render": function (data, type, full, meta) {
+								var id = full["id"];
+								return `<img src='/media/icons/private-primary-school-${id}.png' width='26px' height='32px' />`
+							},
+							"orderable": false,
+							"searchable": false
+						},
+						{
+							"data": null, width: '', class: '',
+							"render": function (data, type, full, meta) {
+								var id = full["id"];
+								return `<img src='/media/icons/high-catholic-${id}.png' width='26px' height='32px' />`
+							},
+							"orderable": false,
+							"searchable": false
+						},
+						{
+							"data": null, width: '', class: '',
+							"render": function (data, type, full, meta) {
+								var id = full["id"];
+								return `<img src='/media/icons/primary-catholic-${id}.png' width='26px' height='32px' />`
+							},
+							"orderable": false,
+							"searchable": false
+						},
+						//{
+						//	"data": null, width: '', class: '',
+						//	"render": function (data, type, full, meta) {
+						//		var id = full["id"];
+						//		return "<a class='btn btn-sm btn-warning' id='btnEditCurrentStatus' title='Edit' onclick='EditCurrentStatus(\"" + id + "\")'><i class='fas fa-edit'> </i> </a> <a class='btn btn-sm btn-danger' id='btnDeleteCurrentStatus' title='Delete' onclick='Delete(\"" + id + "\")'><i class='fas fa-trash'> </i> </a>"
+						//	},
+						//	"orderable": false,
+						//	"searchable": false
+						//}
+					],
+					"order": [[0, "asc",]],
+					"dom": 'lfrtBip',
+					"buttons": [
+						{
+							extend: 'copy',
+							messageTop: '\n ',
+							messageBottom: '\n ',
+							exportOptions: {
+								columns: ':visible'
+								//columns: [0, 1, 2, 3, 4, 5, 6]
+							},
+							text: '<i class="fa fa-clone"></i> Copy'
+						},
+						{
+							extend: 'excel',
+							messageTop: '\n ',
+							messageBottom: '\n ',
+							exportOptions: {
+								columns: ':visible'
+								//columns: [0, 1, 2, 3, 4, 5, 6]
+							},
+							text: '<i class="fa fa-file-excel-o"></i> Excel'
+						},
+						{
+							extend: 'csv',
+							messageTop: '\n ',
+							messageBottom: '\n ',
+							exportOptions: {
+								columns: ':visible'
+								//columns: [0, 1, 2, 3, 4, 5, 6]
+							},
+							text: '<i class="fa fa-file"></i> CSV'
+						},
+						{
+							extend: 'pdf',
+							messageTop: '\n ',
+							messageBottom: '\n ',
+							exportOptions: {
+								columns: ':visible'
+								//columns: [0, 1, 2, 3, 4, 5, 6]
+							},
+							text: '<i class="fa fa-file-pdf-o"></i> PDF'
+						},
+						{
+							extend: 'print',
+							messageTop: '<br> ',
+							messageBottom: '<br> ',
+							exportOptions: {
+								columns: ':visible'
+								//columns: [0, 1, 2, 3, 4, 5, 6]
+							},
+							text: '<i class="fa fa-print"></i> Print'
+						},
+						'colvis'
+					],
+					responsive: true
+				});
+		}
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            getCurrentStatussTableRecords();
+        });
+    </script>
+
+    }

@@ -1,0 +1,47 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace SAS.DBFirst;
+
+public partial class Ministry
+{
+    public int Id { get; set; }
+
+    public int? ChurchId { get; set; }
+
+    public int? MinistryTypeId { get; set; }
+
+    public string FirstName { get; set; }
+
+    public string LastName { get; set; }
+
+    public string StreetAddress { get; set; }
+
+    public int? SasuburbId { get; set; }
+
+    public bool? PasameAsSa { get; set; }
+
+    public string PostalAddress { get; set; }
+
+    public int? PasuburbId { get; set; }
+
+    public string Phone1 { get; set; }
+
+    public string Phone2 { get; set; }
+
+    public string Fax { get; set; }
+
+    public string Email { get; set; }
+
+    public string Note { get; set; }
+
+    public string CreatedBy { get; set; }
+
+    public string UpdatedBy { get; set; }
+
+    public DateTime? CreatedAt { get; set; }
+
+    public DateTime? UpdatedAt { get; set; }
+
+    public bool IsActive { get; set; }
+}

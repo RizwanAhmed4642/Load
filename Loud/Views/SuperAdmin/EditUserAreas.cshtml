@@ -1,0 +1,414 @@
+﻿@model ApplicationUser
+@{
+    ViewData["Title"] = "Edit User Areas";
+}
+
+<div class="content-wrapper">
+    <div class="container-fluid">
+                <form method="post" asp-controller="SuperAdmin" asp-action="EditUserAreas" asp-antiforgery="true" class="form-horizontal">
+
+        <div class="row pt-2">
+            <div class="col-xl-12">
+                <h1 class="text-center font-weight-bold">@ViewData["Title"]</h1>
+                <hr />
+
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="col-xl-3" hidden="hidden">
+                            <div class="form-group">
+                                <label class="control-label" asp-for="Id">Id: </label>
+                                <input class="form-control form-control-sm" asp-for="Id" disabled />
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="form-group">
+                                <label class="control-label" asp-for="FirstName">First Name: </label> @Model.FirstName
+                                <input class="form-control form-control-sm" asp-for="FirstName" hidden="hidden" />
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="form-group">
+                                <label class="control-label" asp-for="LastName">Last Name: </label> @Model.LastName
+                                <input class="form-control form-control-sm" asp-for="LastName" hidden="hidden"/>
+                            </div>
+                        </div>
+                        <div class="col-xl-3" hidden="hidden">
+                            <div class="form-group">
+                                <label class="control-label" asp-for="UserName">Username: </label> @Model.UserName
+                                <input class="form-control form-control-sm" asp-for="UserName" hidden="hidden" />
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="form-group">
+                                <label class="control-label" asp-for="Email">E-mail: </label> @Model.Email
+                                <input class="form-control form-control-sm" asp-for="Email" hidden="hidden" />
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3">
+                            <div class="form-group">
+                                <label class="control-label">User Role: </label> @ViewBag.CurrentRole
+                                <select class="form-control form-control-sm" name="UserRole" id="UserRole" hidden="hidden">
+                                    <option value="" disabled selected hidden>Select User Role</option>
+                                    <option value="Administrator">Administrator</option>
+                                    <option value="Editor">Editor</option>
+                                    <option value="Reader">Reader</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3">
+                            <div class="form-group">
+                                <div class="form-check text-success">
+                                    <input type="checkbox" class="form-check-input" value="true" name="addAllAreasOneClick" id="addAllAreasOneClick">
+                                    <label class="form-check-label" for="addAllAreasOneClick">Add All Areas to @Model.FirstName</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="form-group">
+                                <div class="form-check text-danger">
+                                    <input type="checkbox" class="form-check-input" value="true" name="removeAllAreasOneClick" id="removeAllAreasOneClick">
+                                    <label class="form-check-label" for="removeAllAreasOneClick">Remove All Areas from @Model.FirstName</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+        <div class="row pt-2">
+            <div class="col-xl-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">@Model.FirstName Current Areas</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="display table table-striped table-borderless w-100" id="areasTable">
+                            <thead>
+                                <tr>
+                                    <td>
+                                        Nm
+                                    </td>
+                                    <td>
+                                        Start Lat
+                                    </td>
+                                    <td>
+                                        Start Lng
+                                    </td>
+                                    <td>
+                                        End Lat
+                                    </td>
+                                    <td>
+                                        End Lng
+                                    </td>
+                                    @*<td>
+                                    SAS Church Partner ID
+                                    </td>
+                                    <td>
+                                    Colour
+                                    </td>*@
+                                    <td>
+                                            <button type="button" onclick="makeSelectedAll('.btnRemoveAllAreas')" class="btn btn-sm btn-success">Select All</button>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+                <div class="col-xl-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">All Areas</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <table class="display table table-striped table-borderless w-100" id="allAreasTable">
+                                <thead>
+                                    <tr>
+                                        <td>
+                                            Nm
+                                        </td>
+                                        <td>
+                                            Start Lat
+                                        </td>
+                                        <td>
+                                            Start Lng
+                                        </td>
+                                        <td>
+                                            End Lat
+                                        </td>
+                                        <td>
+                                            End Lng
+                                        </td>
+                                        @*<td>
+                                        SAS Church Partner ID
+                                        </td>
+                                        <td>
+                                        Colour
+                                        </td>*@
+                                        <td>
+                                            <button type="button" onclick="makeSelectedAll('.btnAddAllAreas')" class="btn btn-sm btn-success">Select All</button>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row p-3">
+                <div class="col-xl-12 text-center">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a class="btn btn-danger" asp-controller="SuperAdmin" asp-action="Index">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function getAreasTableRecords() {
+            $('#areasTable').DataTable().destroy();
+            $.fn.dataTable.ext.errMode = 'none';    //Suppressing Warnings in DataTables
+            dataTableReceipt = $("#areasTable").DataTable(
+                {
+                    "processing": true, // for show progress bar
+                    //"serverSide": true, // for process server side
+                    "filter": true, // this is for disable filter (search box)
+                    "orderMulti": false, // for disable multiple column at once
+                    "initComplete": function (settings, json) {
+
+                        //console.log(json);
+                    },
+                    "pageLength": 10,
+                    "ajax": {
+                        //"url": '/UserAreas/GetAllUserAreasWithUserIDInJson/,
+                        //"url": "@Url.Action("GetAllAreasInJson", "Area")",
+                        "url": '@Url.Action("GetAllUserAreasWithUserIDInJson", "UserAreas")/?UserID=@Model.Id',
+                        "type": "GET",
+                        "datatype": "json"
+                    },
+                    "columns": [
+                        { "data": "nm", width: '', class: '' },
+                        { "data": "startLat", width: '', class: '' },
+                        { "data": "startLng" },
+                        { "data": "endLat", width: '', class: '' },
+                        { "data": "endLng", width: '', class: '' },
+                        //{ "data": "sASChurchPartnerID", width: '', class: '' },
+                        //{ "data": "colour", width: '', class: '' },
+                        {
+                            "data": null, width: '', class: '',
+                            "render": function (data, type, full, meta) {
+                                var id = full["userAreaID"];
+
+                                return '<input type="checkbox" class="btnRemoveAllAreas" name = "removeSelectedAreas" value = "'+id+'" />'
+                            },
+                            "orderable": false,
+                            "searchable": false
+                        }
+                    ],
+                    "order": [[0, "asc",]],
+                    "dom": 'lfrtBip',
+                    "buttons": [
+                        {
+                            extend: 'copy',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-clone"></i> Copy'
+                        },
+                        {
+                            extend: 'excel',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file-excel-o"></i> Excel'
+                        },
+                        {
+                            extend: 'csv',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file"></i> CSV'
+                        },
+                        {
+                            extend: 'pdf',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file-pdf-o"></i> PDF'
+                        },
+                        {
+                            extend: 'print',
+                            messageTop: '<br> ',
+                            messageBottom: '<br> ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-print"></i> Print'
+                        },
+                        'colvis'
+                    ],
+                    responsive: true
+                });
+        }
+
+        function getAllAreasTableRecords() {
+            $('#allAreasTable').DataTable().destroy();
+            $.fn.dataTable.ext.errMode = 'none';    //Suppressing Warnings in DataTables
+            dataTableReceipt = $("#allAreasTable").DataTable(
+                {
+                    "processing": true, // for show progress bar
+                    //"serverSide": true, // for process server side
+                    "filter": true, // this is for disable filter (search box)
+                    "orderMulti": false, // for disable multiple column at once
+                    "initComplete": function (settings, json) {
+
+                        //console.log(json);
+                    },
+                    "pageLength": 10,
+                    "ajax": {
+                        //"url": '/Area/GetAllAreasInJson/,
+                        "url": "@Url.Action("GetAllAreasInJson", "Area")",
+                        "type": "GET",
+                        "datatype": "json"
+                    },
+                    "columns": [
+                        { "data": "nm", width: '', class: '' },
+                        { "data": "startLat", width: '', class: '' },
+                        { "data": "startLng" },
+                        { "data": "endLat", width: '', class: '' },
+                        { "data": "endLng", width: '', class: '' },
+                        //{ "data": "sASChurchPartnerID", width: '', class: '' },
+                        //{ "data": "colour", width: '', class: '' },
+                        {
+                            "data": null, width: '', class: '',
+                            "render": function (data, type, full, meta) {
+                                var id = full["id"];
+
+                                return '<input type="checkbox" class="btnAddAllAreas" name = "addSelectedAreas" value = "' + id + '" />'
+                            },
+                            "orderable": false,
+                            "searchable": false
+                        }
+                    ],
+                    "order": [[0, "asc",]],
+                    "dom": 'lfrtBip',
+                    "buttons": [
+                        {
+                            extend: 'copy',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-clone"></i> Copy'
+                        },
+                        {
+                            extend: 'excel',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file-excel-o"></i> Excel'
+                        },
+                        {
+                            extend: 'csv',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file"></i> CSV'
+                        },
+                        {
+                            extend: 'pdf',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file-pdf-o"></i> PDF'
+                        },
+                        {
+                            extend: 'print',
+                            messageTop: '<br> ',
+                            messageBottom: '<br> ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-print"></i> Print'
+                        },
+                        'colvis'
+                    ],
+                    responsive: true
+                });
+        }
+
+        function makeSelectedAll(selectionClass)
+        {
+            $(selectionClass).prop('checked', true);
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('#UserRole').val("@ViewBag.CurrentRole");
+            $('.select2').select2();
+            getAreasTableRecords();
+            getAllAreasTableRecords();
+
+            //Hide or Disable addAllAreasOneClick checkbox when user click on removeAllAreasOneClick and vesa versa
+            $('#addAllAreasOneClick').click(function () {
+                $('#removeAllAreasOneClick').attr('disabled', this.checked);
+            });
+            $('#removeAllAreasOneClick').click(function () {
+                $('#addAllAreasOneClick').attr('disabled', this.checked);
+            });
+        });
+
+    </script>
+}

@@ -1,0 +1,93 @@
+﻿@model IEnumerable<ApplicationUser>
+@{
+    ViewData["Title"] = "User Accounts";
+}
+
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <div class="row pt-2">
+            <div class="col-xl-12">
+                <h1 class="text-center font-weight-bold">@ViewData["Title"]</h1>
+                <hr />
+                <p>@ViewData["Message"]</p>
+                <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+                <table class="table table-condensed table-bordered" id="myTable">
+                    <thead>
+                        <tr>
+                            <th hidden="hidden">ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th class="w-25">Username</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Count() == 0)
+                        {
+                            <tr>
+                                <td colspan="3" class="text-center">
+                                    No User Accounts
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        }
+                        else
+                        {
+                            foreach (ApplicationUser user in Model)
+                            {
+                                <tr>
+                                    <td hidden="hidden">@user.Id</td>
+                                    <td>@user.FirstName</td>
+                                    <td>@user.LastName</td>
+                                    <td class="w-25">@user.UserName</td>
+                                    <td>@user.Email</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                             Action <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-right">
+
+                                                <li><a class="dropdown-item text-success" asp-controller="SuperAdmin" asp-action="Edit" asp-route-id="@user.Id"><i class="fas fa-edit"> </i> Edit</a></li>
+                                                <li role="separator" class="dropdown-divider"></li>
+                                                <li><a class="dropdown-item text-danger btn-delete" asp-controller="SuperAdmin" asp-action="Delete" asp-route-id="@user.Id"><i class="fas fa-trash"> </i> Delete</a></li>
+                                                <li role="separator" class="dropdown-divider"></li>
+                                                <li><a class="dropdown-item text-secondary" asp-controller="SuperAdmin" asp-action="EditUserAreas" asp-route-id="@user.Id"><i class="fas fa-chart-pie"> </i> Edit Areas</a></li>
+                                                <li role="separator" class="dropdown-divider"></li>
+                                                <li><a class="dropdown-item text-primary" asp-controller="SuperAdmin" asp-action="ChangePassword" asp-route-id="@user.Id"><i class="fas fa-lock"> </i> Change Password</a></li>
+                                            </ul>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+                <a class="btn btn-primary" asp-action="Create">Create User</a>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            $("#myTable").DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": true,
+                "responsive": true,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-3:eq(0)');
+        });
+
+    </script>
+}

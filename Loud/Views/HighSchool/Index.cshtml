@@ -1,0 +1,1212 @@
+﻿@model SAS.Models.ViewModels.SASViewModels.HighSchoolVM
+@{
+    ViewData["Title"] = "High School Multi Task";
+}
+<style>
+    /*Records to show in only one line not goes to next line*/
+/*    td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}*/
+
+</style>
+
+<div class="loaderBar"></div>
+<div class="content-wrapper">
+    <div class="container-fluid" style="font-size:11px;">
+        <div class="row pt-2">
+            <div class="col-xl-12">
+                @*<h5 class="text-center font-weight-bold">@Model.type @ViewData["Title"]</h5>
+                <p>@ViewData["Message"]</p>*@
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title text-center font-weight-bold">@Model.type @ViewData["Title"] </h5>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="display table table-striped table-borderless w-100" id="HighSchoolsTable">
+                            <thead>
+                                <tr class="font-weight-bold">
+                                    <td class=""> Name </td>
+                                    <td class=""> Street Address </td>
+                                    <td class=""> Town </td>
+                                    <td class=""> State </td>
+                                    <td class=""> P.Code </td>
+                                    <td class=""> MapAcc </td>
+                                    <td class=""> SRE Status </td>
+                                    <td class=""> Next Task(DoBy) </td>
+                                    <td class=""> Task Subject </td>
+                                    <td class=""> Days </td>
+                                    <td class=""> E-mail </td>
+                                    <td class=""> Last Info Sent </td>
+                                    <td class=""> Associated P.Schools </td>
+                                    <td class=""> Associated Churches </td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+               @* <a href="@Url.Action("Create", "HighSchool")" class="btn btn-primary mb-2">
+                    <i class="fas fa-plus"></i>
+                    Create High School
+                </a>*@
+            </div>
+        </div>
+        <div class="row" style="font-size:11px;">
+            <div class="col-xl-12">
+                <form asp-action="Create" id="mainForm" data-parsley-validate>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-xl-2" hidden="hidden">
+                            <div class="form-group row" style="margin-top:-10px;">
+                                <label asp-for="ID" class="col-sm-3 col-form-label"></label>
+                                <div class="col-sm-9">
+                                    <input asp-for="ID" class="form-control form-control-sm" />
+                                    <span asp-validation-for="ID" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-9 border">
+                            <div class="row p-2">
+                                <div class="row p-1">
+                                    <div class="col-xl-6">
+                                        <div class="form-group row" style="margin-top:-10px;">
+                                            <label asp-for="Nm" class="col-sm-3 col-form-label"></label>
+                                            <div class="col-sm-9">
+                                                <input asp-for="Nm" class="form-control form-control-sm" required="required" />
+                                                <span asp-validation-for="Nm" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group row" style="margin-top:-10px;">
+                                            <label asp-for="StreetAddress" class="col-sm-3 col-form-label"></label>
+                                            <div class="col-sm-9">
+                                                <input asp-for="StreetAddress" class="form-control form-control-sm" required="required" />
+                                                <span asp-validation-for="StreetAddress" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group row" style="margin-top:-10px;">
+                                            <label asp-for="SASuburbID" class="col-sm-3 col-form-label"></label>
+                                            <div class="col-sm-9">
+                                                <select asp-for="SASuburbID" class="form-control form-control-sm select2" asp-items="ViewBag.SASuburbID"></select>
+                                                <span asp-validation-for="SASuburbID" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6" hidden="hidden">
+                                        <div class="form-group row" style="margin-top:-10px;">
+                                            <label asp-for="PostalAddress" class="col-sm-3 col-form-label"></label>
+                                            <div class="col-sm-9">
+                                                <input asp-for="PostalAddress" class="form-control form-control-sm" />
+                                                <span asp-validation-for="PostalAddress" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group row" style="margin-top:-10px;">
+                                            <label for="SASuburbIDState" class="col-sm-3 col-form-label">State</label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control form-control-sm" id="SASuburbIDState" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group row" style="margin-top:-10px;">
+                                            <label for="PostCode" class="col-sm-3 col-form-label">Post Code</label>
+                                            <div class="col-sm-9">
+                                                <input asp-for="PostCode" class="form-control form-control-sm" readonly="readonly" />
+                                                <span asp-validation-for="PostCode" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group row" style="margin-top:-10px;">
+                                            <label asp-for="Country" class="col-sm-3 col-form-label"></label>
+                                            <div class="col-sm-9">
+                                                <select asp-for="Country" class="form-control select2" asp-items="Html.GetEnumSelectList<SAS.Models.ViewModels.SASViewModels.EnumCountriesVM>()"></select>
+                                                <span asp-validation-for="Country" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6" style="margin-top:30px;" hidden="hidden">
+                                        <div class="form-group row" style="margin-top:-10px;">
+                                            <div class="form-check text-success">
+                                                <input type="checkbox" class="form-check-input" value="true" name="PASameAsSA" id="PASameAsSA">
+                                                <label class="form-check-label" for="PASameAsSA">PA Same as SA</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6" hidden="hidden">
+                                        <div class="form-group row" style="margin-top:-10px;">
+                                            <label for="PASuburbID" class="col-sm-3 col-form-label">PA Suburb ID</label>
+                                            <div class="col-sm-9">
+                                                <select asp-for="PASuburbID" class="form-control form-control-sm select2" asp-items="ViewBag.PASuburbID"></select>
+                                                <span asp-validation-for="PASuburbID" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group row" style="margin-top:-10px;">
+                                            <label asp-for="Phone1" class="col-sm-3 col-form-label"></label>
+                                            <div class="col-sm-9">
+                                                <input asp-for="Phone1" class="form-control form-control-sm" placeholder="Format (+61 2 4031 8888)" required="required" />
+                                                <span asp-validation-for="Phone1" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group row" style="margin-top:-10px;">
+                                            <label asp-for="Phone2" class="col-sm-3 col-form-label"></label>
+                                            <div class="col-sm-9">
+                                                <input asp-for="Phone2" class="form-control form-control-sm" placeholder="Format (+61 409 635 500)" />
+                                                <span asp-validation-for="Phone2" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6" hidden="hidden">
+                                        <div class="form-group row" style="margin-top:-10px;">
+                                            <label asp-for="Fax" class="col-sm-3 col-form-label"></label>
+                                            <div class="col-sm-9">
+                                                <input asp-for="Fax" class="form-control form-control-sm" />
+                                                <span asp-validation-for="Fax" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group row" style="margin-top:-10px;">
+                                            <label asp-for="email" class="col-sm-3 col-form-label"></label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                                    <input asp-for="email" class="form-control form-control-sm" />
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-sm btn-outline-secondary" onclick="openEmailSender('email')" type="button"><i class="fas fa-paper-plane fa-fw"> </i></button>
+                                                    </div>
+                                                    <span asp-validation-for="email" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group row" style="margin-top:-10px;">
+                                            <label asp-for="email2" class="col-sm-3 col-form-label"></label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                                    <input asp-for="email2" class="form-control form-control-sm" />
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-sm btn-outline-secondary" onclick="openEmailSender('email2')" type="button"><i class="fas fa-paper-plane fa-fw"> </i></button>
+                                                    </div>
+                                                    <span asp-validation-for="email2" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group row" style="margin-top:-10px;">
+                                            <label asp-for="Principal" class="col-sm-3 col-form-label"></label>
+                                            <div class="col-sm-9">
+                                                <input asp-for="Principal" class="form-control form-control-sm" />
+                                                <span asp-validation-for="Principal" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group row" style="margin-top:-10px;">
+                                            <label asp-for="PrincipalPhone" class="col-sm-3 col-form-label"></label>
+                                            <div class="col-sm-9">
+                                                <input asp-for="PrincipalPhone" class="form-control form-control-sm" />
+                                                <span asp-validation-for="PrincipalPhone" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group row" style="margin-top:-10px;">
+                                            <label asp-for="PrincipalEmail" class="col-sm-3 col-form-label"></label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                                    <input asp-for="PrincipalEmail" class="form-control form-control-sm" />
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-sm btn-outline-secondary" onclick="openEmailSender('PrincipalEmail')" type="button"><i class="fas fa-paper-plane fa-fw"> </i></button>
+                                                    </div>
+                                                    <span asp-validation-for="PrincipalEmail" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group row" style="margin-top:-10px;">
+                                            <label asp-for="WebSite" class="col-sm-3 col-form-label"></label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control form-control-sm" value="@Model.WebSite" name="WebSite" id="WebSite">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-sm btn-outline-secondary" onclick="gotowebsite('WebSite');" type="button"><i class="fas fa-search fa-fw"> </i></button>
+                                                    </div>
+                                                    <span asp-validation-for="WebSite" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6">
+                                        <div class="form-group row" style="margin-top:-10px;">
+                                            <label asp-for="MapLink" class="col-sm-3 col-form-label"></label>
+                                            <div class="col-sm-9">
+                                                <input asp-for="MapLink" class="form-control form-control-sm" />
+                                                <span asp-validation-for="MapLink" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 border">
+                            <div class="row pt-2">
+                                <div class="col-xl-6" hidden="hidden">
+                                    <div class="form-group row" style="margin-top:-10px;">
+                                        <label asp-for="OverideID" class="col-sm-3 col-form-label"></label>
+                                        <div class="col-sm-9">
+                                            <select asp-for="OverideID" class="form-control form-control-sm select2" asp-items="ViewBag.OverideID"></select>
+                                            <span asp-validation-for="OverideID" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-10">
+                                    <div class="form-group row">
+                                        <label asp-for="SREStatusID" class="col-sm-3 col-form-label"></label>
+                                        <div class="col-sm-9">
+                                            <select asp-for="SREStatusID" class="form-control form-control-sm select2" asp-items="ViewBag.SREStatusID"></select>
+                                            <span asp-validation-for="SREStatusID" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2">
+                                    <div class="form-group row">
+                                        <img src="~/media/icons/high-school-1.png" alt="School Icon" id="schoolIcon" width="26px" height="32px" />
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="form-group row" style="margin-top:-10px;">
+                                        <label asp-for="type" class="col-sm-3 col-form-label"></label>
+                                        <div class="col-sm-9">
+                                            <select asp-for="type" class="form-control form-control-sm select2" asp-items="ViewBag.type" required="required"></select>
+                                            <span asp-validation-for="type" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="form-group row" style="margin-top:-10px;">
+                                        <label asp-for="AreaID" class="col-sm-3 col-form-label"></label>
+                                        <div class="col-sm-9">
+                                            <select asp-for="AreaID" class="form-control form-control-sm select2" asp-items="ViewBag.AreaID"></select>
+                                            <span asp-validation-for="AreaID" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-6">
+                                    <div class="form-group row" style="margin-top:-10px;">
+                                        <label asp-for="Lat" class="col-sm-3 col-form-label">Lat</label>
+                                        <div class="col-sm-9">
+                                            <input asp-for="Lat" class="form-control form-control-sm" />
+                                            <span asp-validation-for="Lat" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="form-group row" style="margin-top:-10px;">
+                                        <label asp-for="Lng" class="col-sm-3 col-form-label">Lng</label>
+                                        <div class="col-sm-9">
+                                            <input asp-for="Lng" class="form-control form-control-sm" />
+                                            <span asp-validation-for="Lng" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="form-group row" style="margin-top:-10px;">
+                                        <label asp-for="GooglePlusCode" class="col-sm-3 col-form-label"></label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <input asp-for="GooglePlusCode" class="form-control form-control-sm" />
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-sm btn-outline-secondary" onclick="gotowebsite('GooglePlusCode','Map');" type="button"><i class="fas fa-search fa-fw"> </i></button>
+                                                </div>
+                                                <span asp-validation-for="GooglePlusCode" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-12" style="margin-top:30px;" hidden="hidden">
+                                <div class="form-group row" style="margin-top:-10px;">
+                                    <div class="form-check text-success">
+                                        <input type="checkbox" class="form-check-input" value="true" name="LatLongSetByUser" id="LatLongSetByUser">
+                                        <label class="form-check-label" for="LatLongSetByUser">Lat Lng Set By User?</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="form-group row" style="margin-top:-10px;">
+                                        <label asp-for="SREBoardID" class="col-sm-3 col-form-label"></label>
+                                        <div class="col-sm-9">
+                                            <select asp-for="SREBoardID" class="form-control form-control-sm select2" asp-items="ViewBag.SREBoardID"></select>
+                                            <span asp-validation-for="SREBoardID" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="form-group row" style="margin-top:-10px;">
+                                        <label asp-for="ChaplainID" class="col-sm-3 col-form-label"></label>
+                                        <div class="col-sm-9">
+                                            <select asp-for="ChaplainID" class="form-control form-control-sm select2" asp-items="ViewBag.ChaplainID"></select>
+                                            <span asp-validation-for="ChaplainID" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-12" style="margin-top:30px;" hidden="hidden">
+                                <div class="form-group row" style="margin-top:-10px;">
+                                    <div class="form-check text-success">
+                                        <input type="checkbox" class="form-check-input" value="true" name="LockAreaID" id="LockAreaID">
+                                        <label class="form-check-label" for="LockAreaID">Lock Area ID?</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-6">
+                                    <div class="form-group row" style="margin-top:-10px;">
+                                        <div class="col-sm-9">
+                                            <div class="form-check text-success">
+                                                <input type="checkbox" class="form-check-input" value="true" name="WantsNewsletter" id="WantsNewsletter">
+                                                <label class="form-check-label mt-1" for="WantsNewsletter">Wants News letter?</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="form-group">
+                                        <button type="button" onclick="submitForm();" id="btnSubmitForm" class="btn btn-sm btn-primary">@ViewBag.btnSubmitFormText</button>
+                                        <a asp-action="Index" class="btn btn-sm btn-danger">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-4 border ">
+                            <p class="font-weight-bold p-2">
+                                <span class="float-xl-left">
+                                    Activities
+                                </span>
+                                <span class="float-xl-right">
+                                    <button onclick="openTaskForm();" type="button" class="btn btn-sm btn-outline-success"><i class="fas fa-plus"> </i> </button>
+                                    <button onclick="getTasksTableRecords();" type="button" class="btn btn-sm btn-outline-primary"><i class="fas fa-sync"> </i> </button>
+                                </span>
+                            </p>
+                            <table class="display table table-striped table-sTasked w-100" id="TasksTable">
+                                <thead>
+                                    <tr class="bg-gradient-gray">
+                                        <td class=""> Type </td>
+                                        <td class=""> Subject </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-xl-4 border ">
+                            <p class="font-weight-bold p-2">
+                                <span class="float-xl-left">
+                                    Associated Primary School
+                                </span>
+                                <span class="float-xl-right">
+                                    <button onclick="openPSForm();" type="button" class="btn btn-sm btn-outline-success"><i class="fas fa-plus"> </i> </button>
+                                    <button onclick="getPrimarySchoolTableRecords();" type="button" class="btn btn-sm btn-outline-primary"><i class="fas fa-sync"> </i> </button>
+                                </span>
+                            </p>
+                            <table class="display table table-striped table-sTasked w-100" id="PrimarySchoolTable">
+                                <thead>
+                                    <tr class="bg-gradient-gray">
+                                        <td class=""> Name </td>
+                                        <td class=""> Note </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-xl-4 border ">
+                            <p class="font-weight-bold p-2">
+                                <span class="float-xl-left">
+                                    Associated Churches
+                                </span>
+                                <span class="float-xl-right">
+                                    <button onclick="openChurchForm();" type="button" class="btn btn-sm btn-outline-success"><i class="fas fa-plus"> </i> </button>
+                                    <button onclick="getChurchTableRecords();" type="button" class="btn btn-sm btn-outline-primary"><i class="fas fa-sync"> </i> </button>
+                                    <button class="btn btn-sm btn-outline-secondary" title="Send Stats" onclick="openEmailSender('email')" type="button"><i class="fas fa-paper-plane fa-fw"> </i></button>
+                                </span>
+                            </p>
+                            <table class="display table table-striped table-sTasked w-100" id="ChurchTable">
+                                <thead>
+                                    <tr class="bg-gradient-gray">
+                                        <td class=""> Name </td>
+                                        <td class=""> Note </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-5">
+                            <div class="form-group">
+                                <label class="col-sm-3 col-form-label">Activity Details</label>
+                                <p class="form-control" disabled style="height:120px;" id="pActivityDetails"></p>
+                            </div>
+                        </div>
+                        <div class="col-xl-7">
+                            <div class="form-group">
+                                <label asp-for="Note" class="col-sm-3 col-form-label"></label>
+                                <textarea asp-for="Note" class="form-control"></textarea>
+                                <span asp-validation-for="Note" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+@*            <div class="col-xl-4">
+            </div>*@
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12 border ">
+                <p class="font-weight-bold p-2">
+                    <span class="float-xl-left">
+                        Grade Tallies
+                    </span>
+                    <span class="float-xl-right">
+                        <button onclick="openHSGForm();" type="button" class="btn btn-sm btn-outline-success"><i class="fas fa-plus"> </i> </button>
+                        <button onclick="getHSGTableRecords();" type="button" class="btn btn-sm btn-outline-primary"><i class="fas fa-sync"> </i> </button>
+                    </span>
+                </p>
+                <table class="display table table-striped table-sTasked w-100" id="HSGTable">
+                    <thead>
+                        <tr class="bg-gradient-gray">
+                            <td class="">Classes</td>
+                            <td class="">SASTT</td>
+                            <td class="">SRETT</td>
+                            <td class="">Seminar</td>
+                            <td class="">None</td>
+                            <td class="">Declined</td>
+                            <td class="">Opportunities</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+
+
+
+    <script>
+
+        function Delete(id) {
+
+            $.confirm({
+                title: 'Delete',
+                content: 'Are you sure to delete this record?',
+                icon: 'fa fa-question-circle-o',
+                theme: 'supervan',
+                closeIcon: true,
+                animation: 'scale',
+                type: 'orange',
+                buttons: {
+                    cancel: {
+                        text: 'Cancel',
+                        btnClass: 'btn-blue',
+                        keys: ['esc'],
+                        action: function () {
+
+                            $(".loaderBar").fadeOut("slow");
+                        }
+                    },
+                    confirm: {
+                        text: 'Delete',
+                        btnClass: 'btn-red',
+                        keys: ['enter', 'shift'],
+                        action: function () {
+
+                            $(".loaderBar").fadeIn("slow");
+                            $.ajax({
+
+                                type: "POST",
+                                url: '@Url.Action("DeleteHighSchool", "HighSchool")?id=' + id,
+                                success: function (data) {
+
+                                    if (data.success) {
+                                        $(".loaderBar").fadeOut("slow");
+                                        $.notify("Deleted Successfully", { globalPosition: "top right", className: "success" });
+                                        //Loading the Grid Records
+                                        getHighSchoolsTableRecords();
+                                    }
+                                },
+                                error: function () { alert('Error:'); $(".loaderBar").fadeOut("slow"); }
+                            });
+                            //reload the page after 1 second
+                            //Sleep for 1 seconds and then redirect to home
+                            //setTimeout(function () { location.reload(); }, 1000);
+                        }
+                    }
+                }
+            });
+
+        }
+
+        function getHighSchoolsTableRecords() {
+            $('#HighSchoolsTable').DataTable().destroy();
+            //$('#HighSchoolsTable').DataTable().ajax.reload().draw();
+            $.fn.dataTable.ext.errMode = 'none';    //Suppressing Warnings in DataTables
+            dataTableReceipt = $("#HighSchoolsTable").DataTable(
+                {     
+                    "processing": true, // for show progress bar
+                    "serverSide": true, // for process server side
+                    "filter": true, // this is for disable filter (search box)
+                    "orderMulti": false, // for disable multiple column at once
+                    "initComplete": function (settings, json) {
+
+                        //console.log(json);
+                    },
+                    "pageLength": 5,
+                    "ajax": {
+                        //"url": '/HighSchool/GetAllHighSchoolsInJson?type=@Model.type,
+                        "url": "@Url.Action("GetAllHighSchoolsInJson", "HighSchool")",
+                        "type": "Post",
+                        "datatype": "json",
+                        "data": function (d) {
+                            // pass start and length parameters to the server
+                            d.draw = d.draw || 1;
+                            d.start = d.start || 0;
+                            d.length = d.length || 100;
+                            d.page = (d.start / d.length) + 1;
+                            d.pageSize = d.length;
+                            d.type = "@Model.type"; // add any additional parameters that your server requires
+                            d.search = $('#HighSchoolsTable').DataTable().search();
+                        },
+                        "dataSrc": function (json) {
+
+                                // return the data for the current page
+                                return json.data;
+                            },
+                            "error": function (jqXHR, textStatus, errorThrown) {
+                                //console.log(jqXHR.responseText);
+                            }
+                    },
+                    "columns": [
+                        { "data": "nm", width: '', class: '' },
+                        { "data": "streetAddress", width: '', class: '', },
+                        { "data": "saSuburbName", width: '', class: '' },
+                        { "data": "stateName", width: '', class: '' },
+                        { "data": "postalCode", width: '', class: '' },
+                        { "data": "geoAccuracyName", width: '', class: '' },
+                        { "data": "sreStatusName", width: '', class: '' },
+                        { "data": "nextTaskDoBy", width: '', class: '' },
+                        { "data": "taskSubject", width: '', class: '' },
+                        { "data": "days", width: '', class: '' },
+                        { "data": "emailFlag", width: '', class: '' },
+                        {
+                            "data": null,
+                            class: '',
+                            "render": function (data, type, full, meta) {
+
+                                if (typeof (full["lastInfoSent"]) !== "undefined" && full["lastInfoSent"] !== null)
+                                    return moment(full["lastInfoSent"]).format('MM-DD-YYYY');//converting datetime into string with moment.js function
+                                else
+                                    return "";
+                            }
+                        },
+                        { "data": "associatedPrimarySchool", width: '', class: '' },
+                        { "data": "associatedChurch", width: '', class: '' },
+                        {
+                            "data": null, width: '', class: '',
+                            "render": function (data, type, full, meta) {
+                                var id = full["id"];
+                                return `<div class="btn-group">
+                                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <span class="caret"></span>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                                <li><a class='dropdown-item btn text-primary' id='btnEditHighSchool' title='Quick Edit' onclick='EditHighSchool(${id})'><i class='fas fa-edit'> </i> Q-Edit</a></li>
+                                                                <li role="separator" class="dropdown-divider"></li>
+                                                                <li><a class="dropdown-item btn text-success" href="HighSchool/EditHighSchool/${id}" target='_blank' title='Edit' onclick=''><i class="fas fa-edit"> </i> Edit</a></li>
+                                                                <li role="separator" class="dropdown-divider"></li>
+                                                                        <li><a class='dropdown-item btn text-danger' id='btnDeleteHighSchool' title='Delete' onclick='Delete(${id})'><i class='fas fa-trash'> </i> Delete</a></li>
+                                                            </ul>
+                                                        </div>
+                                         `
+                            },
+                            "orderable": false,
+                            "searchable": false
+                        }
+                    ],
+                    "order": [[0, "asc",]],
+                    "scrollY": "200px",
+                    "scrollX": true,
+                    "dom": 'frtip',
+                    //"buttons": [
+                    //    {
+                    //        extend: 'copy',
+                    //        messageTop: '\n ',
+                    //        messageBottom: '\n ',
+                    //        exportOptions: {
+                    //            columns: ':visible'
+                    //            //columns: [0, 1, 2, 3, 4, 5, 6]
+                    //        },
+                    //        text: '<i class="fa fa-clone"></i> Copy'
+                    //    },
+                    //    {
+                    //        extend: 'excel',
+                    //        messageTop: '\n ',
+                    //        messageBottom: '\n ',
+                    //        exportOptions: {
+                    //            columns: ':visible'
+                    //            //columns: [0, 1, 2, 3, 4, 5, 6]
+                    //        },
+                    //        text: '<i class="fa fa-file-excel-o"></i> Excel'
+                    //    },
+                    //    {
+                    //        extend: 'csv',
+                    //        messageTop: '\n ',
+                    //        messageBottom: '\n ',
+                    //        exportOptions: {
+                    //            columns: ':visible'
+                    //            //columns: [0, 1, 2, 3, 4, 5, 6]
+                    //        },
+                    //        text: '<i class="fa fa-file"></i> CSV'
+                    //    },
+                    //    {
+                    //        extend: 'pdf',
+                    //        messageTop: '\n ',
+                    //        messageBottom: '\n ',
+                    //        exportOptions: {
+                    //            columns: ':visible'
+                    //            //columns: [0, 1, 2, 3, 4, 5, 6]
+                    //        },
+                    //        text: '<i class="fa fa-file-pdf-o"></i> PDF'
+                    //    },
+                    //    {
+                    //        extend: 'print',
+                    //        messageTop: '<br> ',
+                    //        messageBottom: '<br> ',
+                    //        exportOptions: {
+                    //            columns: ':visible'
+                    //            //columns: [0, 1, 2, 3, 4, 5, 6]
+                    //        },
+                    //        text: '<i class="fa fa-print"></i> Print'
+                    //    },
+                    //    'colvis'
+                    //],
+                    //responsive: true
+                });
+        }
+
+        function EditHighSchool(id) {
+
+            $(".loaderBar").fadeIn("slow");
+            $.ajax({
+                url: '@Url.Action("EditHighSchool", "HighSchool")',
+                data: { id: id },
+                cache: false,
+                type: 'GET',
+                success: function (data) {
+
+                    if (data.success) {
+
+                        $(".loaderBar").fadeOut("slow");
+                        if (data.success != false) {
+
+                            //Settings the controls values
+                            $("#ID").val(data.data.id);
+                            $("#Nm").val(data.data.nm);
+                            $("#StreetAddress").val(data.data.streetAddress);
+                            $("#SASuburbID").val(data.data.saSuburbID);
+                            $('#SASuburbID').trigger('change');
+                            $("#PostalAddress").val(data.data.postalAddress);
+                            $("#PASuburbID").val(data.data.paSuburbID);
+                            $('#PASuburbID').trigger('change');
+                            $("#Phone1").val(data.data.phone1);
+                            $("#Phone2").val(data.data.phone2);
+                            $("#Fax").val(data.data.fax);
+                            $("#email").val(data.data.email);
+                            $("#email2").val(data.data.email2);
+                            $("#Principal").val(data.data.principal);
+                            $("#PrincipalPhone").val(data.data.principalPhone);
+                            $("#PrincipalEmail").val(data.data.principalEmail);
+                            $('#Note').summernote('code', data.data.note);
+                            //$("#Note").text(data.data.note);
+                            $('#PASameAsSA').prop('checked', data.data.paSameAsSA);
+                            $("#WebSite").val(data.data.webSite);
+                            $("#GeoStatusID").val(data.data.geoStatusID);
+                            $("#GeoAccuracyID").val(data.data.geoAccuracyID);
+                            $("#type").val(data.data.type);
+                            $("#Lat").val(data.data.lat);
+                            $("#Lng").val(data.data.lng);
+                            $('#LatLongSetByUser').prop('checked', data.data.wantsNewsletter);
+                            $("#SREStatusID").val(data.data.sreStatusID);
+                            $('#SREStatusID').trigger('change');
+                            $("#OverideID").val(data.data.overideID);
+                            $('#OverideID').trigger('change');
+                            $('#WantsNewsletter').prop('checked', data.data.wantsNewsletter);
+                            $("#AreaID").val(data.data.areaID);
+                            $('#AreaID').trigger('change');
+                            $('#LockAreaID').prop('checked', data.data.lockAreaID);
+                            $("#SREBoardID").val(data.data.sreBoardID);
+                            $("#Country").val(data.data.country);
+                            $('#Country').trigger('change');
+                            $("#PostCode").text(data.data.postCode);
+                            $("#GooglePlusCode").val(data.data.googlePlusCode);
+                            $("#MapLink").val(data.data.mapLink);
+
+                            getTasksTableRecords();
+                            getPrimarySchoolTableRecords();
+                            getChurchTableRecords();
+                            getHSGTableRecords();
+                            setSchoolIcon();
+                            setWebPageTitle();
+                            setStateAndPostCodeTitle();
+                            $("#btnSubmitForm").text("Update");
+                            //console.log(data);
+
+                        }
+                        else
+                            $.notify(data.message, { globalPosition: "top right", className: data.flag });
+
+                    }
+                }
+            });
+        }
+
+        function setAreaDropDown(lat, lng) {
+
+            let str = lat.toFixed(0) + ',' + lng.toFixed(0);
+
+            let oldSelectStr = $('#AreaID option:selected').text();
+            //To select an option with a specific text using jQuery
+            $('#AreaID option').filter(':contains("' + str + '")').prop('selected', true);
+            $('#AreaID').trigger('change');
+            let newSelectStr = $('#AreaID option:selected').text();
+
+            // Check if the selected option has changed
+            if (oldSelectStr === newSelectStr) {
+                $.notify(`The Area selected option has not changed.`, { globalPosition: "top right", className: "info" });
+            } else {
+                $.notify(`The Area(${oldSelectStr}) selected option has changed to Area(${str}).`, { globalPosition: "top right", className: "success" });
+            }
+
+        }
+
+       $('#SASuburbID').on('select2:close', function (e) {
+
+            var country = $("#Country option:selected").text();
+            var state = $("#SASuburbIDState").text();
+            var streetAddress = $("#StreetAddress").val();
+            var adrs = country+", "+state+", "+streetAddress;
+            //alert(adrs);
+            getLatLngAndPlusCode(adrs)
+                .then((result) => {
+                    $("#Lat").val(result.latitude);
+                    $("#Lng").val(result.longitude);
+                    $("#GooglePlusCode").val(result.formatted_address);
+                    setAreaDropDown(result.latitude, result.longitude);
+                    //console.log(result);
+
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        });
+
+
+        $('#Phone1').mask('+99 9 9999 9999');
+        $('#Phone2').mask('+99 999 999 999');
+
+         function gotowebsite(id,type) {
+            var webURL = $("#"+id).val();
+            if(type=="Map")
+                window.open("https://www.google.com/maps/search/?api=1&query=" + webURL, '_blank');
+            else
+                window.open(webURL, '_blank');
+
+        }
+
+        function openTaskForm() {
+            var id = $("#ID").val();
+            var sVenueType = "High School";
+            if (id == "" || id == "0") {
+                $.notify("Please save the high school first.", { globalPosition: "top right", className: "error" });
+            }
+            else {
+                openPopupForm(`@Url.Action("Create", "Task")?sVenueID=${id}&sVenueType=${sVenueType}`);
+            }
+        }
+
+        function openPSForm() {
+            var id = $("#ID").val();
+            if (id == "" || id == "0") {
+                $.notify("Please save the high school first.", { globalPosition: "top right", className: "error" });
+            }
+            else {
+                openPopupForm(`@Url.Action("Create", "PrimarySchool")?hsID=${id}`);
+            }
+        }
+
+        function openChurchForm() {
+            var id = $("#ID").val();
+            if (id == "" || id == "0") {
+                $.notify("Please save the high school first.", { globalPosition: "top right", className: "error" });
+            }
+            else {
+                openPopupForm(`@Url.Action("Create", "Church")?hsID=${id}`);
+            }
+
+        }
+
+        function openHSGForm() {
+            var id = $("#ID").val();
+            if (id == "" || id == "0") {
+                $.notify("Please save the high school first.", { globalPosition: "top right", className: "error" });
+            }
+            else {
+                openPopupForm(`@Url.Action("Create", "HS_SchoolGrade")?hsID=${id}`);
+            }
+
+        }
+
+        function openEmailSender(id) {
+            var email = $("#" + id).val();
+            email = btoa(email);
+            openPopupForm(`@Url.Action("Create", "Email")?email=${email}`);
+        }
+
+        function validateMainForm() {
+
+            if ($('#mainForm').parsley().validate()) {
+                return true;
+            } else {
+                $.notify("Some fields are required.", { position: "top right", className: "error" });
+                return false;
+            }
+
+        }
+
+        function submitForm() {
+            if (validateMainForm()) {
+
+                $(".loaderBar").fadeIn("slow");
+                let myform = document.getElementById("mainForm");
+                // Serializing the whole form data to submit
+                let fd = new FormData(myform);
+                let url = "";
+                if ($("#btnSubmitForm").text() == "Create")
+                    url = '@Url.Action("Create", "HighSchool")'
+                else if ($("#btnSubmitForm").text() == "Update")
+                    url = '@Url.Action("UpdateHighSchool", "HighSchool")'
+                $.ajax({
+                    url: url,
+                    data: fd,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    success: function (data) {
+
+                        if (data.success) {
+
+                            $(".loaderBar").fadeOut("slow");
+                            if (data.success != false) {
+                                $.notify(data.message, { globalPosition: "top right", className: data.flag });
+                                ////Refresh the form controls for next record
+                                $("#mainForm").trigger("reset");
+                                $('#Note').summernote('code', '');
+                                $("#btnSubmitForm").text("Create");
+                                //Loading the Grid Records
+                                getHighSchoolsTableRecords();
+                                //Sleep for 3 seconds and then redirect to home
+                                //setTimeout(function () { window.location.href = "/HighSchool/Index"; }, 3000);
+
+                            }
+                            else
+                                $.notify(data.message, { globalPosition: "top right", className: data.flag });
+
+                        }
+                    }
+                });
+            }
+        }
+
+        function showDetails(item) {
+            var note = item.getAttribute("data-note");
+            //$("#pActivityDetails").text(note);
+            const container = document.getElementById("pActivityDetails");
+            container.innerHTML = note;
+        }
+
+
+        function getTasksTableRecords() {
+
+            $('#TasksTable').DataTable().destroy();
+            $.fn.dataTable.ext.errMode = 'none';    //Suppressing Warnings in DataTables
+            dataTableReceipt = $("#TasksTable").DataTable(
+                {
+                    "ordering": false, // to disable sorting
+                    "processing": true, // for show progress bar
+                    //"serverSide": true, // for process server side
+                    "filter": true, // this is for disable filter (search box)
+                    "orderMulti": false, // for disable multiple column at once
+                    "initComplete": function (settings, json) {
+
+                        //console.log(json);
+                    },
+                    "pageLength": 10,
+                    "ajax": {
+                        //"url": '/Task/GetAllTasksWithHighSchool/,
+                        "url": "@Url.Action("GetAllTasksWithHighSchool", "Task")?hsID=" + $("#ID").val()+ "&venueTypeID=0",
+                        "type": "GET",
+                        "datatype": "json"
+                    },
+                    "columns": [
+
+                        { "data": "taskTypeName", width: '', class: '' },
+                        { "data": "subject", width: '', class: '' },
+                    ],
+                    //"order": [[0, "asc",]],
+                    "dom": 'tp',
+                    "rowCallback": function (row, data, index) {
+                        // Add a unique ID to each row using the task ID
+                        $(row).attr('id', 'task_' + data.id);
+                        $(row).attr('data-note', data.note);
+                        //$(row).attr('onclick', showDetails(this));
+                        $(row).click(function () { showDetails(this); });
+
+                    }
+                });
+        }
+
+        function getPrimarySchoolTableRecords() {
+
+            $('#PrimarySchoolTable').DataTable().destroy();
+            $.fn.dataTable.ext.errMode = 'none';    //Suppressing Warnings in DataTables
+            dataTableReceipt = $("#PrimarySchoolTable").DataTable(
+                {
+                    "ordering": false, // to disable sorting
+                    "processing": true, // for show progress bar
+                    //"serverSide": true, // for process server side
+                    "filter": true, // this is for disable filter (search box)
+                    "orderMulti": false, // for disable multiple column at once
+                    "initComplete": function (settings, json) {
+
+                        //console.log(json);
+                    },
+                    "pageLength": 10,
+                    "ajax": {
+                        //"url": '/PrimarySchool/GetAllPrimaryShcoolsWithHighSchool/,
+                        "url": "@Url.Action("GetAllPrimaryShcoolsWithHighSchool", "PrimarySchool")?hsID=" + $("#ID").val(),
+                        "type": "GET",
+                        "datatype": "json"
+                    },
+                    "columns": [
+
+                        { "data": "nm", width: '', class: '' },
+                        { "data": "note", width: '', class: '' },
+                    ],
+                    //"order": [[0, "asc",]],
+                    "dom": 'tp',
+                    "rowCallback": function (row, data, index) {
+                        // Add a unique ID to each row using the task ID
+                        $(row).attr('id', 'ps_' + data.id);
+
+                    }
+                });
+        }
+
+        function getChurchTableRecords() {
+
+            $('#ChurchTable').DataTable().destroy();
+            $.fn.dataTable.ext.errMode = 'none';    //Suppressing Warnings in DataTables
+            dataTableReceipt = $("#ChurchTable").DataTable(
+                {
+                    "ordering": false, // to disable sorting
+                    "processing": true, // for show progress bar
+                    //"serverSide": true, // for process server side
+                    "filter": true, // this is for disable filter (search box)
+                    "orderMulti": false, // for disable multiple column at once
+                    "initComplete": function (settings, json) {
+
+                        //console.log(json);
+                    },
+                    "pageLength": 10,
+                    "ajax": {
+                        //"url": '/Church/GetAllChurchsWithHighSchool/,
+                        "url": "@Url.Action("GetAllChurchsWithHighSchool", "Church")?hsID=" + $("#ID").val(),
+                        "type": "GET",
+                        "datatype": "json"
+                    },
+                    "columns": [
+
+                        { "data": "nm", width: '', class: '' },
+                        { "data": "note", width: '', class: '' },
+                    ],
+                    //"order": [[0, "asc",]],
+                    "dom": 'tp',
+                    "rowCallback": function (row, data, index) {
+                        // Add a unique ID to each row using the task ID
+                        $(row).attr('id', 'ps_' + data.id);
+
+                    }
+                });
+        }
+
+        function getHSGTableRecords() {
+            
+            var url = "@Url.Action("GetAllHSGWithHighSchool", "HS_SchoolGrade")?hsID=" + $("#ID").val()
+			$.ajax({
+				url: url,
+				//data: fd,
+				cache: false,
+				processData: false,
+				contentType: false,
+				type: 'GET',
+				success: function (data) {
+
+					//console.log(data);
+				    var schoolGradeName = 0;
+					var sastt = 0;
+					var srett = 0;
+					var seminar = 0;
+					var none = 0;
+					var deleted = 0;
+
+					for (let i = 0; i < data.data.length; i++) {
+						const item = data.data[i];
+						schoolGradeName = schoolGradeName + 1;
+						sastt = sastt + item.sastt;
+						srett = srett + item.srett;
+						seminar = seminar + item.seminar;
+						none = none + item.none;
+						deleted = deleted + item.deleted;
+					}
+					//To clear all rows from a table
+					$('#HSGTable tbody').empty();
+					$('#HSGTable > tbody:last-child').append(`<tr class="">
+																	<td class="">${schoolGradeName}</td>
+																			<td class="">${sastt}</td>
+																	<td class="">${srett}</td>
+															<td class="">${seminar}</td>
+																	<td class="">${none}</td>
+																	<td class="">${deleted}</td>
+														<td class="">${seminar + none}</td>
+														</tr>`);
+				}
+			});
+        }
+
+        
+        function setSchoolIcon() {
+            //You can get the index of a dropdown option using the index()
+            var selectedIndex = $("#SREStatusID option:selected").index();
+            var index = Number(selectedIndex + 1);
+            // Set the src attribute of the image element
+            if($("#type option:selected").val()=="Public")
+                $('#schoolIcon').attr('src', '/media/icons/high-school-' + index + '.png');
+            else if($("#type option:selected").val()=="Private")
+                $('#schoolIcon').attr('src', '/media/icons/private-high-school-' + index + '.png');
+            else if ($("#type option:selected").val() == "Catholic")
+                $('#schoolIcon').attr('src', '/media/icons/high-catholic-' + index + '.png');
+        }
+
+        $(document).on("change", "#SREStatusID", function () {
+
+            setSchoolIcon();
+        });
+
+
+        function setWebPageTitle() {
+
+            $("#pageTitle").text($("#type option:selected").val() + " High School");
+        }
+        $(document).on("change", "#type", function () {
+
+            setWebPageTitle();
+        });
+
+
+        function setStateAndPostCodeTitle() {
+
+            var selectedItemText = $('#SASuburbID option:selected').text();
+            var parts = selectedItemText.split(' - ');
+            $('#SASuburbIDState').text(parts[1]);
+            $('#PostCode').val(parts[2]);
+        }
+        $('#SASuburbID').change(function () {
+
+            setStateAndPostCodeTitle();
+        });
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            getHighSchoolsTableRecords();
+
+            if ("@Model.PASameAsSA" == "True")
+                $('#PASameAsSA').prop('checked', true);
+
+            if ("@Model.LockAreaID" == "True")
+                $('#LockAreaID').prop('checked', true);
+
+            if ("@Model.WantsNewsletter" == "True")
+                $('#WantsNewsletter').prop('checked', true);
+
+            if ("@Model.LatLongSetByUser" == "True")
+                $('#LatLongSetByUser').prop('checked', true);
+
+            $('#PASameAsSA').click(function () {
+                $("#PASuburbID").val($("#SASuburbID").val())
+                $("#PostalAddress").val($("#StreetAddress").val())
+                $('#PASuburbID').trigger('change');
+
+            });
+
+            getTasksTableRecords();
+            getPrimarySchoolTableRecords();
+            getChurchTableRecords();
+            getHSGTableRecords();
+            setSchoolIcon();
+            setWebPageTitle();
+            setStateAndPostCodeTitle();
+        });
+    </script>
+
+    }

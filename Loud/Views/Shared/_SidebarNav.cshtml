@@ -1,0 +1,928 @@
+﻿
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="/" class="brand-link" style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+        <img src="~/adminlte/dist/img/AdminLTELogo.png" alt="SAS Logo" class="" style="height:100px;width:100;">
+        <br />
+        <span class="brand-text font-weight-light">Love Out Loud</span>
+    </a>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class
+                 with font-awesome or any other icon font library -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-map-marker-alt nav-icon"></i>
+                        <p>
+                            Maps
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "Maps")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Show Map</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("MapDetails", "Maps")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Map Details</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-school"></i>
+                        <p>
+                            Schools
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    High Schools
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Create", "HighSchool")?type=Public" class="nav-link">
+                                        <i class="far fa-dot-circle nav-icon"></i>
+                                        <p>Create High School</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "HighSchool")?type=Public" class="nav-link">
+                                        <i class="far fa-dot-circle nav-icon"></i>
+                                        <p>High School Multitask</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    Private High Schools
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Create", "HighSchool")?type=Private" class="nav-link">
+                                        <i class="far fa-dot-circle nav-icon"></i>
+                                        <p>Create Private High</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "HighSchool")?type=Private" class="nav-link">
+                                        <i class="far fa-dot-circle nav-icon"></i>
+                                        <p>Private High Multitask</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    Primary School
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Create", "PrimarySchool")?hsID=1&type=Public" class="nav-link">
+                                        <i class="far fa-dot-circle nav-icon"></i>
+                                        <p>Create Primary School</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "PrimarySchool")?type=Public" class="nav-link">
+                                        <i class="far fa-dot-circle nav-icon"></i>
+                                        <p>Primary School Multitask</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    Private Primary School
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Create", "PrimarySchool")?hsID=1&type=Private" class="nav-link">
+                                        <i class="far fa-dot-circle nav-icon"></i>
+                                        <p>Create Private Primary</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "PrimarySchool")?type=Private" class="nav-link">
+                                        <i class="far fa-dot-circle nav-icon"></i>
+                                        <p>Private Primary Multitask</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-church"></i>
+                        <p>
+                            Churches
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Create", "Church")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create Church</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "Church")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Church Multi Task</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-chart-pie"></i>
+                        <p>
+                            Areas
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Create", "Area")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create Area</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "Area")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Areas List</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-user-nurse"></i>
+                        <p>
+                            Chaplains
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Create", "Chaplain")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create Chaplain</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "Chaplain")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Chaplains List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-solid fa-tasks"></i>
+                                <p>
+                                    Chaplain Tasks
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Create", "ChaplainTask")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Create Chaplain Task</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "ChaplainTask")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Chaplain Task List</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-th-list"></i>
+                                <p>
+                                    Chaplain Task Types
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Create", "ChaplainTaskType")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Create Task Type</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "ChaplainTaskType")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Task Types List</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-user-tie"></i>
+                        <p>
+                            SAS-Rep
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Create", "SRERep")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create SAS-Rep</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "SRERep")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>SAS-Reps List</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-users-cog"></i>
+                        <p>
+                            SRE Coordinator
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Create", "SRECoordinator")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create SRE Coordinator</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "SRECoordinator")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>SRE Coordinators List</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-tasks"></i>
+                                <p>
+                                    SRE Coordinator Tasks
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Create", "SRECoordinatorTask")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Create Task</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "SRECoordinatorTask")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>SRE Task List</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-th-list"></i>
+                                <p>
+                                    SRECoordinator T.Type
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Create", "SRECoordinatorTaskType")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Create Task Type</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "SRECoordinatorTaskType")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>SRE Task Types List</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-chess-board"></i>
+                        <p>
+                            SRE Board
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Create", "SREBoard")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create SRE Board</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "SREBoard")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>SRE Board List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-solid fa-tasks"></i>
+                                <p>
+                                    SRE Board Tasks
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Create", "SREBoardTask")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Create SRE Board Task</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "SREBoardTask")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>SRE Board Task List</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-solid fa-th-list"></i>
+                                <p>
+                                    SRE Board Task Type
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Create", "SREBoardTaskType")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Create SRE Task Type</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "SREBoardTaskType")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>SRE Board Task Type List</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-solid fa-question-circle"></i>
+                        <p>
+                            SRE Status
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Create", "CurrentStatus")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create SRE Status</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "CurrentStatus")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>SRE Status List</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-solid fa-check-circle"></i>
+                        <p>
+                            Geo Accuracy
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Create", "GeoAccuracy")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create Geo Accuracy</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "GeoAccuracy")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Geo Accuracys List</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-solid fa-city"></i>
+                        <p>
+                            States
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Create", "State")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create State</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "State")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>States List</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-solid fa-warehouse"></i>
+                        <p>
+                            Suburb
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Create", "Suburb")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create Suburb</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "Suburb")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Suburb List</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-solid fa-exchange-alt"></i>
+                        <p>
+                            Overide
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Create", "Overide")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create Overide</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "Overide")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Overide List</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-solid fa-gavel"></i>
+                        <p>
+                            Ministers
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Create", "Minister")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create Minister</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "Minister")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Ministers List</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-solid fa-hands-helping"></i>
+                        <p>
+                            Ministry
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Create", "Ministry")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create Ministry</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "Ministry")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Ministry List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-solid fa-crosshairs"></i>
+                                <p>
+                                    Ministry Type
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Create", "MinistryType")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Create Ministry Type</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "MinistryType")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Ministry Type List</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-handshake"></i>
+
+                        <p>
+                            Minister Fraternal
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Create", "MinisterFraternal")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create Minister Fraternal</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "MinisterFraternal")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Minister Fraternal List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-tasks"></i>
+
+                                <p>
+                                    Minister Fraternal Task
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Create", "MinisterFraternalTask")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Create M.Fraternal Task</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "MinisterFraternalTask")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>M.Fraternal Task List</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-solid fa-th-list"></i>
+                                <p>
+                                    M.Fraternal Task Types
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Create", "MinisterFraternalTaskType")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Create Task Type</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "MinisterFraternalTaskType")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>M.Fraternal T.Types List</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-solid fa-graduation-cap"></i>
+                        <p>
+                            School Grades
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Create", "SchoolGrade")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create School Grade</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "SchoolGrade")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>School Grades List</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-solid fa-award"></i>
+                        <p>
+                            High School Grade
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Create", "HS_SchoolGrade")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create HS Grade</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "HS_SchoolGrade")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>High School Grade List</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-solid fa-running"></i>
+                        <p>
+                            Activities
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Create", "Task")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create Activity</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "Task")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Activities List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-solid fa-tasks"></i>
+                                <p>
+                                    Activity Types
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Create", "TaskType")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Create Activity Type</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "TaskType")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Activity Types List</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-solid fa-plane"></i>
+                        <p>
+                            Trips
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Create", "Trip")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create Trip</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "Trip")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Trips List</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-header">User Management</li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-circle nav-icon"></i>
+                        <p>
+                            Account Management
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+
+                        <li class="nav-item">
+                            <a href="@Url.Action("Create", "SuperAdmin")" class="nav-link">
+                                <i class="far fa-dot-circle nav-icon"></i>
+                                <p>Create User</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "SuperAdmin")" class="nav-link">
+                                <i class="far fa-dot-circle nav-icon"></i>
+                                <p>Users List</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("AddPhoneNumber", "Manage")" class="nav-link">
+                                <i class="far fa-dot-circle nav-icon"></i>
+                                <p>Add Phone#</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("ForgotPassword", "Account")" class="nav-link">
+                                <i class="far fa-dot-circle nav-icon"></i>
+                                <p>Forgot Password</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("index", "UserLogs")" class="nav-link">
+                                <i class="far fa-dot-circle nav-icon"></i>
+                                <p>User Logs</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("LogOff", "Account")" class="nav-link">
+                                <i class="far fa-dot-circle nav-icon"></i>
+                                <p>Log Off</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-circle"></i>
+                        <p>
+                            User Roles
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Create", "Role")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Create Role</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("index", "Role")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Roles List</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+
+                    <a href="@Url.Action("Register", "Account")" class="nav-link">
+                        <i class="fas fa-circle nav-icon"></i>
+                        <p>Register User</p>
+                    </a>
+                </li>
+                <li class="nav-header">Communication</li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-paper-plane"></i>
+                        <p>
+                            E-mails
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="@Url.Action("Create", "Email")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Send E-mail</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="@Url.Action("index", "Email")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>E-mails List</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-header">LABELS INFO</li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon far fa-circle text-success"></i>
+                        <p>Complete</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon far fa-circle text-danger"></i>
+                        <p class="text">Important</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon far fa-circle text-warning"></i>
+                        <p>Warning</p>
+                    </a>
+                </li>
+                <li class="nav-item" style="margin-bottom:140px;">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon far fa-circle text-info"></i>
+                        <p>Informational</p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>

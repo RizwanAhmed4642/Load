@@ -1,0 +1,174 @@
+﻿@model SAS.Models.ViewModels.AccountViewModels.ApplicationUserViewModel
+
+@{
+    ViewData["Title"] = "EditUser";
+}
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <h1 class="text-center">User Profile</h1>
+        <hr />
+        <div class="row pt-2 justify-content-center">
+            <div class="col-xl-8">
+                <div class="card card-widget widget-user shadow">
+                    <div class="widget-user-header bg-info">
+                        <h3 class="widget-user-username">@Model.FirstName @Model.LastName</h3>
+                        <h5 class="widget-user-desc">@Model.Email</h5>
+                    </div>
+                    <div class="widget-user-image">
+                        <img class="img-circle elevation-2" src="~/adminlte/dist/img/user2-160x160.jpg" alt="User Avatar">
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-sm-4 border-right">
+                                <div class="description-block">
+                                    <h5 class="description-header">@Model.DateRegistered</h5>
+                                    <span class="description-text">Registeration</span>
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-4 border-right">
+                                <div class="description-block">
+                                    <h5 class="description-header">@Model.NickName</h5>
+                                    <span class="description-text">Nick Name</span>
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-4">
+                                <div class="description-block">
+                                    <h5 class="description-header">@Model.UserName</h5>
+                                    <span class="description-text">Username</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12 text-center">
+                <button type="button" class="btn btn-primary" onclick="showEditControls();" id="btnEdit"><i class="fas fa-edit"> </i> Edit Me</button>
+            </div>
+        </div>
+
+        <div class="row EditMe">
+            <div class="col-xl-12">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <form asp-action="EditUser">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="row">
+                                <div class="col-xl-3">
+                                    <div class="form-group">
+                                        <label asp-for="UserName" class="control-label"></label>
+                                        <input asp-for="UserName" class="form-control" readonly="readonly" />
+                                        <span asp-validation-for="UserName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3">
+                                    <div class="form-group">
+                                        <label asp-for="Email" class="control-label"></label>
+                                        <input asp-for="Email" class="form-control " />
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3">
+                                    <div class="form-group">
+                                        <label asp-for="FirstName" class="control-label"></label>
+                                        <input asp-for="FirstName" class="form-control " />
+                                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3">
+                                    <div class="form-group">
+                                        <label asp-for="LastName" class="control-label"></label>
+                                        <input asp-for="LastName" class="form-control " />
+                                        <span asp-validation-for="LastName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3" hidden="hidden">
+                                    <div class="form-group">
+                                        <label asp-for="AvatarURL" class="control-label"></label>
+                                        <input asp-for="AvatarURL" class="form-control " />
+                                        <span asp-validation-for="AvatarURL" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3">
+                                    <div class="form-group">
+                                        <label asp-for="DateRegistered" class="control-label"></label>
+                                        <input asp-for="DateRegistered" class="form-control" readonly="readonly" />
+                                        <span asp-validation-for="DateRegistered" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3">
+                                    <div class="form-group">
+                                        <label asp-for="Position" class="control-label"></label>
+                                        <input asp-for="Position" class="form-control " />
+                                        <span asp-validation-for="Position" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3">
+                                    <div class="form-group">
+                                        <label asp-for="NickName" class="control-label"></label>
+                                        <input asp-for="NickName" class="form-control " />
+                                        <span asp-validation-for="NickName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3" hidden="hidden">
+                                    <div class="form-group">
+                                        <label asp-for="UserRole" class="control-label">User Role</label>
+                                        <select class="form-control" name="UserRole" id="UserRole">
+                                            <option value="" disabled selected hidden>Select User Role</option>
+                                            <option value="Administrator">Administrator</option>
+                                            <option value="Editor">Editor</option>
+                                            <option value="Reader">Reader</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 mt-5">
+                                    <div class="form-group">
+                                        <div class="form-check text-success">
+                                            <input type="checkbox" class="form-check-input" name="TwoFactorEnabled" id="TwoFactorEnabled">
+                                            <label class="form-check-label" for="TwoFactorEnabled">Enable 2-Factor Security?</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-success" id="btnSave"><i class="fas fa-save"> </i> Save </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+
+            $(".EditMe").hide();
+            $('#UserRole').val("@ViewBag.CurrentRole");
+
+            if ("@ViewBag.TwoFactorEnabled" == "True")
+                $('#TwoFactorEnabled').prop('checked', true);
+        });
+
+        function showEditControls() {
+
+            $("#btnEdit").hide();
+            $(".EditMe").show();
+        }
+    </script>
+}

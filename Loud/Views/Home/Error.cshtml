@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "ERROR";
+}
+
+<div class="loaderBar"></div>
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <div class="row pt-2">
+            <div class="container-fluid">
+                <div class="row p-5">
+                    <div class="col-xl-12">
+                        <div class="block-error">
+                            <div class="row">
+                                <h1 class="text-danger text-center">404</h1>
+                                <h4 class="text-danger text-center">Page not found</h4>
+                                <div class="error-description">
+                                    Unfortunately we're having trouble loading the page you are looking for.
+                                </div>
+                                <p class="h4 font-weight-bold text-danger blink">
+                                    Please verify if you have the right permission and try again or use action below.
+                                </p>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button class="btn btn-info btn-block" onClick="document.location.href = '/';">Back to dashboard</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-primary btn-block" onClick="history.back();">Previous page</button>
+                                </div>
+                            </div>
+                            <div class="copy">
+                                © All Rights Reserved @DateTime.Now.Year
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+
+    }

@@ -1,0 +1,402 @@
+﻿@model SAS.Models.ViewModels.SASViewModels.ChaplainVM
+
+@{
+    ViewData["Title"] = "Chaplain";
+}
+
+<div class="loaderBar"></div>
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <div class="row pt-2">
+            <div class="col-xl-12">
+                <h1 class="text-center font-weight-bold">@ViewData["Title"]</h1>
+                <hr />
+                <p>@ViewData["Message"]</p>
+                <form asp-action="Create" id="mainForm" data-parsley-validate>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-xl-2" hidden="hidden">
+                            <div class="form-group">
+                                <label asp-for="ID" class="control-label"></label>
+                                <input asp-for="ID" class="form-control form-control-sm" />
+                                <span asp-validation-for="ID" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <label asp-for="Nm" class="control-label"></label>
+                                <input asp-for="Nm" class="form-control form-control-sm"  required="required" />
+                                <span asp-validation-for="Nm" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <label asp-for="FirstName" class="control-label"></label>
+                                <input asp-for="FirstName" class="form-control form-control-sm" required="required" />
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <label asp-for="LastName" class="control-label"></label>
+                                <input asp-for="LastName" class="form-control form-control-sm" />
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-2" hidden="hidden">
+                            <div class="form-group">
+                                <label asp-for="PostalAddress" class="control-label"></label>
+                                <input asp-for="PostalAddress" class="form-control form-control-sm" />
+                                <span asp-validation-for="PostalAddress" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-2" hidden="hidden">
+                            <div class="form-group">
+                                <label asp-for="PASuburbID" class="control-label"></label>
+                                <select asp-for="PASuburbID" class="form-control form-control-sm select2" asp-items="ViewBag.PASuburbID"></select>
+                                <span asp-validation-for="PASuburbID" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <label asp-for="Phone1" class="control-label"></label>
+                                <input asp-for="Phone1" class="form-control form-control-sm" required="required" />
+                                <span asp-validation-for="Phone1" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <label asp-for="Phone2" class="control-label"></label>
+                                <input asp-for="Phone2" class="form-control form-control-sm" />
+                                <span asp-validation-for="Phone2" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <label asp-for="email" class="control-label"></label>
+                                <input asp-for="email" class="form-control form-control-sm" required="required" />
+                                <span asp-validation-for="email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <label asp-for="Note" class="control-label"></label>
+                                <textarea asp-for="Note" class="form-control" id="Note"></textarea>
+                                <span asp-validation-for="Note" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 text-center" style="margin-top:30px;">
+                            <button type="button" onclick="submitForm();" id="btnSubmitForm" class="btn btn-sm btn-primary">Create</button>
+                            <a asp-action="Index" class="btn btn-sm btn-danger">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row pt-2">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Chaplain List</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="display table table-striped table-borderless w-100" id="ChaplainsTable">
+                            <thead>
+                                <tr>
+                                    <td class=""> Name  </td>
+                                    <td class=""> F.Name </td>
+                                    <td class=""> L.Name </td>
+                                    <td class=""> P.Address </td>
+                                    <td class=""> Suburb </td>
+                                    <td class=""> Phone#1 </td>
+                                    <td class=""> Phone#2 </td>
+                                    <td class=""> E-mail </td>
+                                    <td>Actions</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+
+
+
+    <script>
+        function validateMainForm() {
+
+            if ($('#mainForm').parsley().validate()) {
+                return true;
+            } else {
+                $.notify("Some fields are required.", { position: "top right", className: "error" });
+                return false;
+            }
+
+        }
+
+        function submitForm() {
+            if (validateMainForm()) {
+
+                $(".loaderBar").fadeIn("slow");
+                let myform = document.getElementById("mainForm");
+                // Serializing the whole form data to submit
+                let fd = new FormData(myform);
+                let url = "";
+                if ($("#btnSubmitForm").text() == "Create")
+                    url = '@Url.Action("Create", "Chaplain")'
+                else if ($("#btnSubmitForm").text() == "Update")
+                    url = '@Url.Action("UpdateChaplain", "Chaplain")'
+                $.ajax({
+                    url: url,
+                    data: fd,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    success: function (data) {
+
+                        if (data.success) {
+
+                            $(".loaderBar").fadeOut("slow");
+                            if (data.success != false) {
+                                $.notify(data.message, { globalPosition: "top right", className: data.flag });
+                                //Refresh the form controls for next record
+                                $("#mainForm").trigger("reset");
+                                $('#Note').summernote('code', '');
+                                $("#btnSubmitForm").text("Create");
+                                //Loading the Grid Records
+                                getChaplainsTableRecords();
+                                //reload the page after 1 second
+                                //Sleep for 1 seconds and then redirect to home
+                                //setTimeout(function () { location.reload(); }, 1000);
+
+                            }
+                            else
+                                $.notify(data.message, { globalPosition: "top right", className: data.flag });
+
+                        }
+                    }
+                });
+            }
+        }
+
+        function EditChaplain(id) {
+
+            $(".loaderBar").fadeIn("slow");
+            $.ajax({
+                url: '@Url.Action("EditChaplain", "Chaplain")',
+                data: { id: id },
+                cache: false,
+                type: 'POST',
+                success: function (data) {
+
+                    if (data.success) {
+
+                        $(".loaderBar").fadeOut("slow");
+                        if (data.success != false) {
+
+                            //Settings the controls values
+                            $("#ID").val(data.data.id);
+                            $("#Nm").val(data.data.nm);
+                            $('#Note').summernote('code', data.data.note);
+                            //$("#Note").text(data.data.note);
+                            $("#FirstName").val(data.data.firstName);
+                            $("#LastName").val(data.data.lastName);
+                            $("#PostalAddress").val(data.data.postalAddress);
+                            $("#PASuburbID").val(data.data.paSuburbID);
+                            $('#PASuburbID').trigger('change');
+                            $("#Phone1").val(data.data.phone1);
+                            $("#Phone2").val(data.data.phone2);
+                            $("#email").val(data.data.email);
+                            $("#Created_By").val(data.data.created_By);
+                            $("#Updated_By").val(data.data.updated_By);
+                            $("#Created_At").val(data.data.created_At);
+                            $("#Updated_At").val(data.data.updated_At);
+                            $("#btnSubmitForm").text("Update");
+                            //console.log(data);
+
+                        }
+                        else
+                            $.notify(data.message, { globalPosition: "top right", className: data.flag });
+
+                    }
+                }
+            });
+        }
+
+        function Delete(id) {
+
+            $.confirm({
+                title: 'Delete',
+                content: 'Are you sure to delete this record?',
+                icon: 'fa fa-question-circle-o',
+                theme: 'supervan',
+                closeIcon: true,
+                animation: 'scale',
+                type: 'orange',
+                buttons: {
+                    cancel: {
+                        text: 'Cancel',
+                        btnClass: 'btn-blue',
+                        keys: ['esc'],
+                        action: function () {
+
+                            $(".loaderBar").fadeOut("slow");
+                        }
+                    },
+                    confirm: {
+                        text: 'Delete',
+                        btnClass: 'btn-red',
+                        keys: ['enter', 'shift'],
+                        action: function () {
+
+                            $(".loaderBar").fadeIn("slow");
+                            $.ajax({
+
+                                type: "POST",
+                                url: '@Url.Action("DeleteChaplain", "Chaplain")?id=' + id,
+                                success: function (data) {
+
+                                    if (data.success) {
+                                        $(".loaderBar").fadeOut("slow");
+                                        $.notify("Deleted Successfully", { globalPosition: "top right", className: "success" });
+                                        //Loading the Grid Records
+                                        getChaplainsTableRecords();
+                                    }
+                                },
+                                error: function () { alert('Error:'); $(".loaderBar").fadeOut("slow"); }
+                            });
+                            //reload the page after 1 second
+                            //Sleep for 1 seconds and then redirect to home
+                            //setTimeout(function () { location.reload(); }, 1000);
+                        }
+                    }
+                }
+            });
+
+        }
+
+        function getChaplainsTableRecords() {
+            $('#ChaplainsTable').DataTable().destroy();
+            $.fn.dataTable.ext.errMode = 'none';    //Suppressing Warnings in DataTables
+            dataTableReceipt = $("#ChaplainsTable").DataTable(
+                {
+                    "processing": true, // for show progress bar
+                    //"serverSide": true, // for process server side
+                    "filter": true, // this is for disable filter (search box)
+                    "orderMulti": false, // for disable multiple column at once
+                    "initComplete": function (settings, json) {
+
+                        //console.log(json);
+                    },
+                    "pageLength": 10,
+                    "ajax": {
+                        //"url": '/Chaplain/GetAllChaplainsInJson/,
+                        "url": "@Url.Action("GetAllChaplainsInJson", "Chaplain")",
+                        "type": "GET",
+                        "datatype": "json"
+                    },
+                    "columns": [
+                        { "data": "nm", width: '', class: '' },
+                        { "data": "firstName", width: '', class: '' },
+                        { "data": "lastName", width: '', class: '' },
+                        { "data": "postalAddress", width: '', class: '' },
+                        { "data": "suburbName", width: '', class: '' },
+                        { "data": "phone1", width: '', class: '' },
+                        { "data": "phone2", width: '', class: '' },
+                        { "data": "email", width: '', class: '' },
+                        {
+                            "data": null, width: '', class: '',
+                            "render": function (data, type, full, meta) {
+                                var id = full["id"];
+                                return "<a class='btn btn-sm btn-warning' id='btnEditChaplain' title='Edit' onclick='EditChaplain(\"" + id + "\")'><i class='fas fa-edit'> </i> </a> <a class='btn btn-sm btn-danger' id='btnDeleteChaplain' title='Delete' onclick='Delete(\"" + id + "\")'><i class='fas fa-trash'> </i> </a>"
+                            },
+                            "orderable": false,
+                            "searchable": false
+                        }
+                    ],
+                    "order": [[0, "asc",]],
+                    "dom": 'lfrtBip',
+                    "buttons": [
+                        {
+                            extend: 'copy',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-clone"></i> Copy'
+                        },
+                        {
+                            extend: 'excel',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file-excel-o"></i> Excel'
+                        },
+                        {
+                            extend: 'csv',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file"></i> CSV'
+                        },
+                        {
+                            extend: 'pdf',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file-pdf-o"></i> PDF'
+                        },
+                        {
+                            extend: 'print',
+                            messageTop: '<br> ',
+                            messageBottom: '<br> ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-print"></i> Print'
+                        },
+                        'colvis'
+                    ],
+                    responsive: true
+                });
+        }
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            getChaplainsTableRecords();
+        });
+    </script>
+
+    }

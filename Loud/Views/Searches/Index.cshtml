@@ -1,0 +1,22 @@
+﻿@model Dictionary<string, string>
+@{
+    ViewData["Title"] = "Search Results";
+}
+
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <div class="row pt-2">
+            <div class="col-xl-12">
+                <h1 class="text-center font-weight-bold">@ViewData["Title"]</h1>
+                <hr />
+                <p>@ViewData["Message"]</p>
+                <ul class="list-group">
+                    @foreach (KeyValuePair<string, string> controller in Model)
+                    {
+                        <li class="list-group-item text-center h4">@Html.ActionLink(controller.Value, "Index", controller.Key)</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

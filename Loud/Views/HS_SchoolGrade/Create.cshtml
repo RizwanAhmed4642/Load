@@ -1,0 +1,366 @@
+﻿@model SAS.Models.ViewModels.SASViewModels.HS_SchoolGradeVM
+
+@{
+    ViewData["Title"] = "High School Grade";
+}
+<div class="loaderBar"></div>
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <div class="row pt-2">
+            <div class="col-xl-12">
+                <h1 class="text-center font-weight-bold">@ViewData["Title"]</h1>
+                <hr />
+                <p>@ViewData["Message"]</p>
+                <form asp-action="Create" id="mainForm" data-parsley-validate>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-xl-2" hidden="hidden">
+                            <div class="form-group">
+                                <label asp-for="ID" class="control-label"></label>
+                                <input asp-for="ID" class="form-control form-control-sm" />
+                                <span asp-validation-for="ID" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <label asp-for="HSID" class="control-label"></label>
+                                <select asp-for="HSID" class="form-control form-control-sm select2" asp-items="ViewBag.HSID"></select>
+                                <span asp-validation-for="HSID" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <label asp-for="SchoolGradeID" class="control-label"></label>
+                                <select asp-for="SchoolGradeID" class="form-control form-control-sm select2" asp-items="ViewBag.SchoolGradeID"></select>
+                                <span asp-validation-for="SchoolGradeID" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <label asp-for="SASTT" class="control-label"></label>
+                                <input asp-for="SASTT" class="form-control form-control-sm" />
+                                <span asp-validation-for="SASTT" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <label asp-for="SRETT" class="control-label"></label>
+                                <input asp-for="SRETT" class="form-control form-control-sm" />
+                                <span asp-validation-for="SRETT" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <label asp-for="Seminar" class="control-label"></label>
+                                <input asp-for="Seminar" class="form-control form-control-sm" />
+                                <span asp-validation-for="Seminar" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <label asp-for="None" class="control-label"></label>
+                                <input asp-for="None" class="form-control form-control-sm" />
+                                <span asp-validation-for="None" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-2">
+                            <div class="form-group">
+                                <label asp-for="Deleted" class="control-label"></label>
+                                <input asp-for="Deleted" class="form-control form-control-sm" />
+                                <span asp-validation-for="Deleted" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 text-center" style="margin-top:30px;">
+                            <button type="button" onclick="submitForm();" id="btnSubmitForm" class="btn btn-sm btn-primary">Create</button>
+                            <a asp-action="Index" class="btn btn-sm btn-danger">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row pt-2">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">High School Grade List</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="display table table-striped table-borderless w-100" id="HS_SchoolGradesTable">
+                            <thead>
+                                <tr>
+                                    <td class="">High School</td>
+                                    <td class="">School Grade</td>
+                                    <td>Actions</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+
+    <script>
+        function validateMainForm() {
+
+            if ($('#mainForm').parsley().validate()) {
+                return true;
+            } else {
+                $.notify("Some fields are required.", { position: "top right", className: "error" });
+                return false;
+            }
+
+        }
+
+        function submitForm() {
+            if (validateMainForm()) {
+
+                $(".loaderBar").fadeIn("slow");
+                let myform = document.getElementById("mainForm");
+                // Serializing the whole form data to submit
+                let fd = new FormData(myform);
+                let url = "";
+                if ($("#btnSubmitForm").text() == "Create")
+                    url = '@Url.Action("Create", "HS_SchoolGrade")'
+                else if ($("#btnSubmitForm").text() == "Update")
+                    url = '@Url.Action("UpdateHS_SchoolGrade", "HS_SchoolGrade")'
+                $.ajax({
+                    url: url,
+                    data: fd,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    success: function (data) {
+
+                        if (data.success) {
+
+                            $(".loaderBar").fadeOut("slow");
+                            if (data.success != false) {
+                                $.notify(data.message, { globalPosition: "top right", className: data.flag });
+                                //Refresh the form controls for next record
+                                $("#mainForm").trigger("reset");
+                                $("#btnSubmitForm").text("Create");
+                                //Loading the Grid Records
+                                getHS_SchoolGradesTableRecords();
+                                //reload the page after 1 second
+                                //Sleep for 1 seconds and then redirect to home
+                                //setTimeout(function () { location.reload(); }, 1000);
+
+                            }
+                            else
+                                $.notify(data.message, { globalPosition: "top right", className: data.flag });
+
+                        }
+                    }
+                });
+            }
+        }
+
+        function EditHS_SchoolGrade(id) {
+
+            $(".loaderBar").fadeIn("slow");
+            $.ajax({
+                url: '@Url.Action("EditHS_SchoolGrade", "HS_SchoolGrade")',
+                data: { id: id },
+                cache: false,
+                type: 'POST',
+                success: function (data) {
+
+                    if (data.success) {
+
+                        $(".loaderBar").fadeOut("slow");
+                        if (data.success != false) {
+
+                            //Settings the controls values
+                            $("#ID").val(data.data.id);
+                            $("#HSID").val(data.data.hsid);
+                            $('#HSID').trigger('change');
+                            $("#SchoolGradeID").val(data.data.schoolGradeID);
+                            $('#SchoolGradeID').trigger('change');
+                            $("#SASTT").val(data.data.sastt);
+                            $("#SRETT").val(data.data.srett);
+                            $("#Seminar").val(data.data.seminar);
+                            $("#None").val(data.data.none);
+                            $("#Deleted").val(data.data.deleted);
+                            $("#btnSubmitForm").text("Update");
+                            //console.log(data);
+
+                        }
+                        else
+                            $.notify(data.message, { globalPosition: "top right", className: data.flag });
+
+                    }
+                }
+            });
+        }
+
+        function Delete(id) {
+
+            $.confirm({
+                title: 'Delete',
+                content: 'Are you sure to delete this record?',
+                icon: 'fa fa-question-circle-o',
+                theme: 'supervan',
+                closeIcon: true,
+                animation: 'scale',
+                type: 'orange',
+                buttons: {
+                    cancel: {
+                        text: 'Cancel',
+                        btnClass: 'btn-blue',
+                        keys: ['esc'],
+                        action: function () {
+
+                            $(".loaderBar").fadeOut("slow");
+                        }
+                    },
+                    confirm: {
+                        text: 'Delete',
+                        btnClass: 'btn-red',
+                        keys: ['enter', 'shift'],
+                        action: function () {
+
+                            $(".loaderBar").fadeIn("slow");
+                            $.ajax({
+
+                                type: "POST",
+                                url: '@Url.Action("DeleteHS_SchoolGrade", "HS_SchoolGrade")?id=' + id,
+                                success: function (data) {
+
+                                    if (data.success) {
+                                        $(".loaderBar").fadeOut("slow");
+                                        $.notify("Deleted Successfully", { globalPosition: "top right", className: "success" });
+                                        //Loading the Grid Records
+                                        getHS_SchoolGradesTableRecords();
+                                    }
+                                },
+                                error: function () { alert('Error:'); $(".loaderBar").fadeOut("slow"); }
+                            });
+                            //reload the page after 1 second
+                            //Sleep for 1 seconds and then redirect to home
+                            //setTimeout(function () { location.reload(); }, 1000);
+                        }
+                    }
+                }
+            });
+
+        }
+
+        function getHS_SchoolGradesTableRecords() {
+            $('#HS_SchoolGradesTable').DataTable().destroy();
+            $.fn.dataTable.ext.errMode = 'none';    //Suppressing Warnings in DataTables
+            dataTableReceipt = $("#HS_SchoolGradesTable").DataTable(
+                {
+                    "processing": true, // for show progress bar
+                    //"serverSide": true, // for process server side
+                    "filter": true, // this is for disable filter (search box)
+                    "orderMulti": false, // for disable multiple column at once
+                    "initComplete": function (settings, json) {
+
+                        //console.log(json);
+                    },
+                    "pageLength": 10,
+                    "ajax": {
+                        //"url": '/HS_SchoolGrade/GetAllHS_SchoolGradesInJson/,
+                        "url": "@Url.Action("GetAllHS_SchoolGradesInJson", "HS_SchoolGrade")",
+                        "type": "GET",
+                        "datatype": "json"
+                    },
+                    "columns": [
+                        { "data": "hsName", width: '', class: '' },
+                        { "data": "schoolGradeName", width: '', class: '' },
+                        {
+                            "data": null, width: '', class: '',
+                            "render": function (data, type, full, meta) {
+                                var id = full["id"];
+                                return "<a class='btn btn-sm btn-warning' id='btnEditHS_SchoolGrade' title='Edit' onclick='EditHS_SchoolGrade(\"" + id + "\")'><i class='fas fa-edit'> </i> </a> <a class='btn btn-sm btn-danger' id='btnDeleteHS_SchoolGrade' title='Delete' onclick='Delete(\"" + id + "\")'><i class='fas fa-trash'> </i> </a>"
+                            },
+                            "orderable": false,
+                            "searchable": false
+                        }
+                    ],
+                    "order": [[0, "asc",]],
+                    "dom": 'lfrtBip',
+                    "buttons": [
+                        {
+                            extend: 'copy',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-clone"></i> Copy'
+                        },
+                        {
+                            extend: 'excel',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file-excel-o"></i> Excel'
+                        },
+                        {
+                            extend: 'csv',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file"></i> CSV'
+                        },
+                        {
+                            extend: 'pdf',
+                            messageTop: '\n ',
+                            messageBottom: '\n ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-file-pdf-o"></i> PDF'
+                        },
+                        {
+                            extend: 'print',
+                            messageTop: '<br> ',
+                            messageBottom: '<br> ',
+                            exportOptions: {
+                                columns: ':visible'
+                                //columns: [0, 1, 2, 3, 4, 5, 6]
+                            },
+                            text: '<i class="fa fa-print"></i> Print'
+                        },
+                        'colvis'
+                    ],
+                    responsive: true
+                });
+        }
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            getHS_SchoolGradesTableRecords();
+        });
+    </script>
+
+}
